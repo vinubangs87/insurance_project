@@ -13,6 +13,7 @@ use App\Models\permittype;
 use App\Models\vehicledetail;
 use App\Models\financecompany;
 use DB;
+use Carbon\Carbon;
 
 class VehicleDetailController extends Controller
 {
@@ -60,6 +61,16 @@ class VehicleDetailController extends Controller
      */
     public function store(vehicleDetailsValidation $request)
     {
+        $registration_date = Carbon::createFromFormat('d/m/Y', $request->registration_date)->format('Y-m-d');
+        //$expiry_date = Carbon::createFromFormat('d/m/Y', $request->expiry_date)->format('Y-m-d');
+        $insurance_expiry_date = Carbon::createFromFormat('d/m/Y', $request->insurance_expiry_date)->format('Y-m-d');
+        $fitness_expiry_date = Carbon::createFromFormat('d/m/Y', $request->fitness_expiry_date)->format('Y-m-d');
+        $mv_tax_expiry_date = Carbon::createFromFormat('d/m/Y', $request->mv_tax_expiry_date)->format('Y-m-d');
+        $pucc_expiry_date = Carbon::createFromFormat('d/m/Y', $request->pucc_expiry_date)->format('Y-m-d');
+        $permit_valid_upto_date = Carbon::createFromFormat('d/m/Y', $request->permit_valid_upto_date)->format('Y-m-d');
+        $policy_start_date = Carbon::createFromFormat('d/m/Y', $request->policy_start_date)->format('Y-m-d');
+        $policy_end_date = Carbon::createFromFormat('d/m/Y', $request->policy_end_date)->format('Y-m-d');
+        
         $data = new vehicledetail;
         $data->insuranceCompany_id = $request->insuranceCompany_id;
         $data->producttype_id = $request->producttype_id;
@@ -73,16 +84,18 @@ class VehicleDetailController extends Controller
         $data->customer_address = $request->customer_address;
         $data->vehicle_number = $request->vehicle_number;
         $data->registration_number = $request->registration_number;
-        $data->registration_date = $request->registration_date;
-        $data->expiry_date = $request->expiry_date;
-        $data->insurance_expiry_date = $request->insurance_expiry_date;
-        $data->fitness_expiry_date = $request->fitness_expiry_date;
-        $data->mv_tax_expiry_date = $request->mv_tax_expiry_date;
-        $data->pucc_expiry_date = $request->pucc_expiry_date;
+        $data->registration_date = $registration_date;
+        //$data->expiry_date = $expiry_date;
+        $data->insurance_expiry_date = $insurance_expiry_date;
+        $data->fitness_expiry_date = $fitness_expiry_date;
+        $data->mv_tax_expiry_date = $mv_tax_expiry_date;
+        $data->pucc_expiry_date = $pucc_expiry_date;
         $data->finance_type = $request->finance_type;
         $data->permit_number = $request->permit_number;
-        $data->permit_valid_upto_date = $request->permit_valid_upto_date;
+        $data->permit_valid_upto_date = $permit_valid_upto_date;
         $data->policy_number = $request->policy_number;
+        $data->policy_start_date = $policy_start_date;
+        $data->policy_end_date = $policy_end_date;
         $data->renewal_premium = $request->renewal_premium;
         $data->engine_number = $request->engine_number;
         $data->chasis_number = $request->chasis_number;
@@ -140,6 +153,16 @@ class VehicleDetailController extends Controller
      */
     public function update(vehicleDetailsValidation $request, $id)
     {
+        $registration_date = Carbon::createFromFormat('d/m/Y', $request->registration_date)->format('Y-m-d');
+        //$expiry_date = Carbon::createFromFormat('d/m/Y', $request->expiry_date)->format('Y-m-d');
+        $insurance_expiry_date = Carbon::createFromFormat('d/m/Y', $request->insurance_expiry_date)->format('Y-m-d');
+        $fitness_expiry_date = Carbon::createFromFormat('d/m/Y', $request->fitness_expiry_date)->format('Y-m-d');
+        $mv_tax_expiry_date = Carbon::createFromFormat('d/m/Y', $request->mv_tax_expiry_date)->format('Y-m-d');
+        $pucc_expiry_date = Carbon::createFromFormat('d/m/Y', $request->pucc_expiry_date)->format('Y-m-d');
+        $permit_valid_upto_date = Carbon::createFromFormat('d/m/Y', $request->permit_valid_upto_date)->format('Y-m-d');
+        $policy_start_date = Carbon::createFromFormat('d/m/Y', $request->policy_start_date)->format('Y-m-d');
+        $policy_end_date = Carbon::createFromFormat('d/m/Y', $request->policy_end_date)->format('Y-m-d');
+
         $data = vehicledetail::find($id);
         $data->insuranceCompany_id = $request->insuranceCompany_id;
         $data->producttype_id = $request->producttype_id;
@@ -153,16 +176,18 @@ class VehicleDetailController extends Controller
         $data->customer_address = $request->customer_address;
         $data->vehicle_number = $request->vehicle_number;
         $data->registration_number = $request->registration_number;
-        $data->registration_date = $request->registration_date;
-        $data->expiry_date = $request->expiry_date;
-        $data->insurance_expiry_date = $request->insurance_expiry_date;
-        $data->fitness_expiry_date = $request->fitness_expiry_date;
-        $data->mv_tax_expiry_date = $request->mv_tax_expiry_date;
-        $data->pucc_expiry_date = $request->pucc_expiry_date;
+        $data->registration_date = $registration_date;
+        //$data->expiry_date = $expiry_date;
+        $data->insurance_expiry_date = $insurance_expiry_date;
+        $data->fitness_expiry_date = $fitness_expiry_date;
+        $data->mv_tax_expiry_date = $mv_tax_expiry_date;
+        $data->pucc_expiry_date = $pucc_expiry_date;
         $data->finance_type = $request->finance_type;
         $data->permit_number = $request->permit_number;
-        $data->permit_valid_upto_date = $request->permit_valid_upto_date;
+        $data->permit_valid_upto_date = $permit_valid_upto_date;
         $data->policy_number = $request->policy_number;
+        $data->policy_start_date = $policy_start_date;
+        $data->policy_end_date = $policy_end_date;
         $data->renewal_premium = $request->renewal_premium;
         $data->engine_number = $request->engine_number;
         $data->chasis_number = $request->chasis_number;

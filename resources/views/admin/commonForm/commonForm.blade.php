@@ -197,10 +197,10 @@
                           <td>{{ $dataforshow->title }}</td>
   @if(isset($producttype))<td>{{ $dataforshow->prducttype_name }}</td>@endif {{-- Comming from ProductNameController --}}
                           <td>{{ ($dataforshow->status == 1) ? 'Active' : 'Inactive' }}</td>
-                          <td><a href="{{ route(routeDelete, $dataforshow->id) }}" onclick="return confirm('Want to sure delete?')">Delete</a> || <a href="{{ route(routeNameEdit, $dataforshow->id) }}">Edit</a></td>
+                          <td>{{-- <a href="{{ route(routeDelete, $dataforshow->id) }}" onclick="return confirm('Want to sure delete?')">Delete</a> ||  --}}<a href="{{ route(routeNameEdit, $dataforshow->id) }}">Edit</a></td>
                         </tr>
-                      </tbody>
                       	@endforeach
+                      </tbody>
                     </table>
                   </div>
                   </div>
@@ -215,16 +215,11 @@
 </div>        
 @endsection
 
-@push('pagespecificCss')
-<link href="{{ asset('admin/vendors/datatables.net-bs/css/dataTables.bootstrap.min.css') }}" rel="stylesheet">
-@endpush
-
 @push('pagespecificjs')
-<script src="{{ asset('admin/vendors/datatables.net/js/jquery.dataTables.min.js') }}"></script>
-<script src="{{ asset('admin/vendors/datatables.net-bs/js/dataTables.bootstrap.min.js') }}"></script>
-<script src="{{ asset('admin/vendors/datatables.net-buttons/js/dataTables.buttons.min.js') }}"></script>
-<script src="{{ asset('admin/vendors/datatables.net-fixedheader/js/dataTables.fixedHeader.min.js') }}"></script>
-<script src="{{ asset('admin/vendors/datatables.net-keytable/js/dataTables.keyTable.min.js') }}"></script>
-<script src="{{ asset('admin/vendors/datatables.net-responsive/js/dataTables.responsive.min.js') }}"></script>
-<script src="{{ asset('admin/vendors/datatables.net-scroller/js/dataTables.scroller.min.js') }}"></script>
+<script type="text/javascript">
+	$(document).ready(function () {
+  $('#datatable').DataTable();
+  $('.dataTables_length').addClass('bs-select');
+});
+</script>
 @endpush

@@ -3,7 +3,7 @@
 
 <div class="right_col" role="main">
           <!-- top tiles -->
-          <div class="row" style="display: inline-block;" >
+          {{-- <div class="row" style="display: inline-block;" >
           <div class="tile_count">
             <div class="col-md-2 col-sm-4  tile_stats_count">
               <span class="count_top"><i class="fa fa-user"></i> Total Users</span>
@@ -36,7 +36,7 @@
               <span class="count_bottom"><i class="green"><i class="fa fa-sort-asc"></i>34% </i> From last Week</span>
             </div>
           </div>
-        </div>
+        </div> --}}
           <!-- /top tiles -->
         </div>
         

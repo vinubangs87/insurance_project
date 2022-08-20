@@ -21,12 +21,32 @@
 			        @endif
                 <div class="x_panel">
                   <div class="x_title">
-                    <h2>View records</h2>
+                    <h2>View records: </h2>
                     <div class="clearfix"></div>
+                  {{--  <form class="form-label-left" action="" method="post">
+                   	<div class="col-md-3 col-sm-3  form-group">
+                    <select id="insuranceCompany_id" class="form-control" name="insuranceCompany_id">
+												<option value="">Choose..</option>
+												<option value="1">Active</option>
+												<option value="0">Inactive</option>
+										</select>
+                  	</div>
+                   	<div class="col-md-3 col-sm-3  form-group">
+                    <input type="text" name="daterange" class="form-control" value="01/01/2018 - 01/15/2018" />
+                  	</div>
+                  	<div class="col-md-3 col-sm-3  form-group">
+												<button type="submit" class="btn btn-success">Search</button>
+											</div>
+                  </form> --}}
                   </div>
                   <div class="x_content">
                       <div class="row">
                           <div class="col-sm-12">
+                          	<select id="search2" name="expense_category" class="form-control form-control-sm m-2">
+                  	          <option value="none">Select a Status</option>
+                  	          <option value="active">Active</option>
+                  	          <option value="inactive">Inactive</option>
+                  	        </select>
                             <div class="card-box table-responsive">
                     <table id="datatable" class="table table-striped table-bordered" style="width:100%">
                       <thead>
@@ -36,6 +56,7 @@
                           <th>Vehicle number</th>
                           <th>Registration number</th>
                           <th>Policy number</th>
+                          <th>Status</th>
                           <th>Action</th>
                         </tr>
                       </thead>
@@ -49,6 +70,13 @@
                           <td>{{ $vehiclelist->vehicle_number }}</td>
                           <td>{{ $vehiclelist->registration_number }}</td>
                           <td>{{ $vehiclelist->policy_number }}</td>
+                          
+                          	@if((\Carbon\Carbon::now()->format('Y-m-d') > $vehiclelist->registration_date) || (\Carbon\Carbon::now()->format('Y-m-d') > $vehiclelist->fitness_expiry_date) || (\Carbon\Carbon::now()->format('Y-m-d') > $vehiclelist->mv_tax_expiry_date) || (\Carbon\Carbon::now()->format('Y-m-d') > $vehiclelist->insurance_expiry_date) || (\Carbon\Carbon::now()->format('Y-m-d') > $vehiclelist->pucc_expiry_date) || (\Carbon\Carbon::now()->format('Y-m-d') > $vehiclelist->permit_valid_upto_date) || (\Carbon\Carbon::now()->format('Y-m-d') > $vehiclelist->policy_start_date) || (\Carbon\Carbon::now()->format('Y-m-d') > $vehiclelist->policy_end_date))
+                          	<td class="red"><div class="status-inactive">Inactive</div></td>
+                          	@else
+	                          <td><div class="status-active" title="Active">Active</div></td>
+	                          @endif
+                          
                           <td><form method="POST" action="{{ route('vehicledetails.destroy', $vehiclelist->id) }}">
                               @csrf
                               <input name="_method" type="hidden" value="DELETE">
@@ -57,8 +85,8 @@
 
                           <a href="{{ route('vehicledetails.edit', $vehiclelist->id) }}" class="btn btn-primary btn-sm">Edit</a> <a href="{{ route('vehicledetails.show', $vehiclelist->id) }}"  class="btn btn-primary btn-sm">View</a></td>
                         </tr>
-                      </tbody>
                       	@endforeach
+                      </tbody>
                     </table>
                   </div>
                   </div>
@@ -72,18 +100,7 @@
 </div>        
 @endsection
 
-@push('pagespecificCss')
-<link href="{{ asset('admin/vendors/datatables.net-bs/css/dataTables.bootstrap.min.css') }}" rel="stylesheet">
-@endpush
-
 @push('pagespecificjs')
-<script src="{{ asset('admin/vendors/datatables.net/js/jquery.dataTables.min.js') }}"></script>
-<script src="{{ asset('admin/vendors/datatables.net-bs/js/dataTables.bootstrap.min.js') }}"></script>
-<script src="{{ asset('admin/vendors/datatables.net-buttons/js/dataTables.buttons.min.js') }}"></script>
-<script src="{{ asset('admin/vendors/datatables.net-fixedheader/js/dataTables.fixedHeader.min.js') }}"></script>
-<script src="{{ asset('admin/vendors/datatables.net-keytable/js/dataTables.keyTable.min.js') }}"></script>
-<script src="{{ asset('admin/vendors/datatables.net-responsive/js/dataTables.responsive.min.js') }}"></script>
-<script src="{{ asset('admin/vendors/datatables.net-scroller/js/dataTables.scroller.min.js') }}"></script>
 
 <script type="text/javascript">
     $(document).ready(function() {
@@ -93,5 +110,60 @@
             }
         });
     });
+</script>
+
+<script>
+$(function() {
+  $('input[name="daterange"]').daterangepicker({
+    opens: 'left'
+  }, function(start, end, label) {
+    console.log("A new date selection was made: " + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD'));
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function() {
+  var DT1 = $('#datatable').DataTable({
+  	"bDestroy": true,
+    retrieve: true,
+    columnDefs: [{
+      orderable: true,
+      className: 'select-checkbox',
+      targets: 0,
+    }],
+    select: {
+      style: 'os',
+      selector: 'td:first-child'
+    },
+    order: [
+      [1, 'asc']
+    ],
+    dom: 'lrt'
+  });
+  $(".selectAll").on("click", function(e) {
+    if ($(this).is(":checked")) {
+      DT1.rows().select();
+    } else {
+      DT1.rows().deselect();
+    }
+  });
+
+  $('#search').on('input', () => {
+    DT1.search($('#search').val()).draw();
+  });
+  $('#search2').on('change', () => {
+    const state = $("#search2").val();
+    if (state === "none") {
+      $(".status-active").parent().parent().attr("hidden", false);
+      $(".status-inactive").parent().parent().attr("hidden", false);
+      return;
+    }
+
+    $(".status-" + ((state === "active") ? 'inactive' : 'active')).parent().parent().attr("hidden", true);
+    $(".status-" + state).parent().parent().attr("hidden", false);
+
+  });
+});
 </script>
 @endpush

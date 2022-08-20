@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
+{!! ReCaptcha::htmlScriptTagJsApi() !!}
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
@@ -40,6 +41,16 @@
                         </div>
 
                         <div class="row mb-3">
+                            <label class="col-md-4 col-form-label text-md-end">Recaptcha</label>
+                            <div class="col-md-6"> {!! htmlFormSnippet() !!} </div>
+                            @if($errors->has('g-recaptcha-response'))
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $errors->first('g-recaptcha-response') }}</strong>
+                                    </span>
+                           @endif
+                        </div>
+
+                       {{--  <div class="row mb-3">
                             <div class="col-md-6 offset-md-4">
                                 <div class="form-check">
                                     <input class="form-check-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
@@ -49,7 +60,7 @@
                                     </label>
                                 </div>
                             </div>
-                        </div>
+                        </div> --}}
 
                         <div class="row mb-0">
                             <div class="col-md-8 offset-md-4">

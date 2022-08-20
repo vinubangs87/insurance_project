@@ -139,16 +139,16 @@
 										</div>
 
 										<div class="col-md-6 col-sm-6  form-group has-feedback">
-											<label for="inputSuccess2">Registration date <span class="required">*</span></label>
-											<input type="date" class="form-control" id="registration_date" name="registration_date" value="{{ old('registration_date') }}" />
+											<label for="inputSuccess2">Registration/Expiry date <span class="required">*</span></label>
+											<input type="text" class="form-control datetype" id="registration_date" name="registration_date" value="{{ old('registration_date') }}" />
 											<small class="text-danger">
 		                    {{ $errors->first('registration_date',':message') }}
 		                  </small>
 										</div>
 
-										<div class="col-md-6 col-sm-6  form-group has-feedback">
-											<label for="inputSuccess2">Registration Expiry date <span class="required">*</span></label>
-											<input type="date" class="form-control" id="expiry_date" name="expiry_date" value="{{ old('expiry_date') }}" />
+										<div class="col-md-6 col-sm-6  form-group has-feedback" style="display:none;">
+											<label for="inputSuccess2">Registration Expiry date</label>
+											<input type="text" class="form-control datetype" id="expiry_date" name="expiry_date" value="{{ old('expiry_date') }}" />
 											<small class="text-danger">
 		                    {{ $errors->first('expiry_date',':message') }}
 		                  </small>
@@ -156,7 +156,7 @@
 
 										<div class="col-md-6 col-sm-6  form-group has-feedback">
 											<label for="inputSuccess2">Insurance expiry date <span class="required">*</span></label>
-											<input type="date" class="form-control" id="insurance_expiry_date" name="insurance_expiry_date" value="{{ old('insurance_expiry_date') }}" />
+											<input type="text" class="form-control datetype" id="insurance_expiry_date" name="insurance_expiry_date" value="{{ old('insurance_expiry_date') }}" />
 											<small class="text-danger">
 		                    {{ $errors->first('insurance_expiry_date',':message') }}
 		                  </small>
@@ -164,7 +164,7 @@
 
 										<div class="col-md-6 col-sm-6  form-group has-feedback">
 											<label for="inputSuccess2">Fitness expiry date <span class="required">*</span></label>
-											<input type="date" class="form-control" id="fitness_expiry_date" name="fitness_expiry_date" value="{{ old('fitness_expiry_date') }}" />
+											<input type="text" class="form-control datetype" id="fitness_expiry_date" name="fitness_expiry_date" value="{{ old('fitness_expiry_date') }}" />
 											<small class="text-danger">
 		                    {{ $errors->first('fitness_expiry_date',':message') }}
 		                  </small>
@@ -172,7 +172,7 @@
 
 										<div class="col-md-6 col-sm-6  form-group has-feedback">
 											<label for="inputSuccess2">MV tax expiry date <span class="required">*</span></label>
-											<input type="date" class="form-control" id="mv_tax_expiry_date" name="mv_tax_expiry_date" value="{{ old('mv_tax_expiry_date') }}" />
+											<input type="text" class="form-control datetype" id="mv_tax_expiry_date" name="mv_tax_expiry_date" value="{{ old('mv_tax_expiry_date') }}" />
 											<small class="text-danger">
 		                    {{ $errors->first('mv_tax_expiry_date',':message') }}
 		                  </small>
@@ -180,7 +180,7 @@
 
 										<div class="col-md-6 col-sm-6  form-group has-feedback">
 											<label for="inputSuccess2">PUCC expiry date <span class="required">*</span></label>
-											<input type="date" class="form-control" id="pucc_expiry_date" name="pucc_expiry_date" value="{{ old('pucc_expiry_date') }}" />
+											<input type="text" class="form-control datetype" id="pucc_expiry_date" name="pucc_expiry_date" value="{{ old('pucc_expiry_date') }}" />
 											<small class="text-danger">
 		                    {{ $errors->first('pucc_expiry_date',':message') }}
 		                  </small>
@@ -222,7 +222,7 @@
 
 										<div class="col-md-6 col-sm-6  form-group has-feedback">
 											<label for="inputSuccess2">Permit valid upto <span class="required">*</span></label>
-											<input type="date" class="form-control" id="permit_valid_upto_date" name="permit_valid_upto_date" value="{{ old('permit_valid_upto_date') }}" />
+											<input type="text" class="form-control datetype" id="permit_valid_upto_date" name="permit_valid_upto_date" value="{{ old('permit_valid_upto_date') }}" />
 											<small class="text-danger">
 		                    {{ $errors->first('permit_valid_upto_date',':message') }}
 		                  </small>
@@ -233,6 +233,22 @@
 											<input type="text" class="form-control" id="policy_number" name="policy_number" value="{{ old('policy_number') }}" />
 											<small class="text-danger">
 		                    {{ $errors->first('policy_number',':message') }}
+		                  </small>
+										</div>
+
+										<div class="col-md-6 col-sm-6  form-group has-feedback">
+											<label for="inputSuccess2">Policy start date <span class="required">*</span></label>
+											<input type="text" class="form-control datetype" id="policy_start_date" name="policy_start_date" value="{{ old('policy_start_date') }}" />
+											<small class="text-danger">
+		                    {{ $errors->first('policy_start_date',':message') }}
+		                  </small>
+										</div>
+
+										<div class="col-md-6 col-sm-6  form-group has-feedback">
+											<label for="inputSuccess2">Policy end date <span class="required">*</span></label>
+											<input type="text" class="form-control datetype" id="policy_end_date" name="policy_end_date" value="{{ old('policy_end_date') }}" />
+											<small class="text-danger">
+		                    {{ $errors->first('policy_end_date',':message') }}
 		                  </small>
 										</div>
 
