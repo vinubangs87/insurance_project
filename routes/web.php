@@ -55,4 +55,9 @@ Route::get('/financecompanydelete/{id}', [FinanceCompanyController::class,'destr
 
 Route::resource('/vehicledetails', VehicleDetailController::class);
 Route::get('/vehicle/details', [VehicleDetailController::class,'vehiclerecords'])->name('vehicledetails.vehiclerecords');
+
+Route::post('/get/dependent/projectName', [VehicleDetailController::class,'get_dependent_project_name'])->name('dependent.projectName');
+
+// to get uploaded files
+Route::get('/file-view/{filename}', [ViewUploadedFilesController::class,'view_store_files'])->name('file.view');
 // End admin routes

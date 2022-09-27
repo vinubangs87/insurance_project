@@ -23,7 +23,7 @@
 									<h2>Please fill the form <small style="color:red;">(* Means mandatory field)</small></h2>									
 									<div class="clearfix"></div>
 								</div>
-									<form class="form-label-left" action="{{ route('vehicledetails.store') }}" method="post">
+									<form class="form-label-left" action="{{ route('vehicledetails.store') }}" enctype='multipart/form-data' method="post">
 										@csrf
 										<div class="col-md-6 col-sm-6  form-group has-feedback">
 											<label for="inputSuccess2">Insurance company <span class="required">*</span></label>
@@ -55,9 +55,9 @@
 											<label for="inputSuccess2">Product name <span class="required">*</span></label>
 											<select id="procuctname_id" class="form-control" name="procuctname_id">
 												<option value="">Choose..</option>
-												@foreach($procuctname as $procuctname)
+												{{-- @foreach($procuctname as $procuctname)
 												<option value="{{ $procuctname->id }}" {{ old('procuctname_id') == $procuctname->id ? 'selected' : '' }}>{{ $procuctname->title }}</option>
-												@endforeach
+												@endforeach --}}
 											</select>
 											<small class="text-danger">
 		                    {{ $errors->first('procuctname_id',':message') }}
@@ -122,43 +122,75 @@
 		                  </small>
 										</div>
 
-										<div class="col-md-6 col-sm-6  form-group has-feedback">
-											<label for="inputSuccess2">Vehicle number <span class="required">*</span></label>
+										<div class="col-md-3 col-sm-3  form-group has-feedback">
+											<label for="inputSuccess2">Vehicle/Registration number <span class="required">*</span></label>
 											<input type="text" class="form-control" id="vehicle_number" name="vehicle_number" value="{{ old('vehicle_number') }}" />
 											<small class="text-danger">
 		                    {{ $errors->first('vehicle_number',':message') }}
 		                  </small>
 										</div>
 
-										<div class="col-md-6 col-sm-6  form-group has-feedback">
+										<div class="col-md-3 col-sm-3  form-group has-feedback">
+											<label for="inputSuccess2">Upload RC <span class="required">*</span></label>
+											<input type="file" class="form-control" id="rc_image" name="rc_image" />
+											<small class="text-danger">
+		                    {{ $errors->first('rc_image',':message') }}
+		                  </small>
+										</div>
+
+										{{-- <div class="col-md-6 col-sm-6  form-group has-feedback">
 											<label for="inputSuccess2">Registration number <span class="required">*</span></label>
 											<input type="text" class="form-control" id="registration_number" name="registration_number" value="{{ old('registration_number') }}" />
 											<small class="text-danger">
 		                    {{ $errors->first('registration_number',':message') }}
 		                  </small>
-										</div>
+										</div> --}}
 
-										<div class="col-md-6 col-sm-6  form-group has-feedback">
-											<label for="inputSuccess2">Registration/Expiry date <span class="required">*</span></label>
+										<div class="col-md-3 col-sm-3  form-group has-feedback">
+											<label for="inputSuccess2">Registration date <span class="required">*</span></label>
 											<input type="text" class="form-control datetype" id="registration_date" name="registration_date" value="{{ old('registration_date') }}" />
 											<small class="text-danger">
 		                    {{ $errors->first('registration_date',':message') }}
 		                  </small>
 										</div>
 
-										<div class="col-md-6 col-sm-6  form-group has-feedback" style="display:none;">
-											<label for="inputSuccess2">Registration Expiry date</label>
+										<div class="col-md-3 col-sm-3  form-group has-feedback">
+											<label for="inputSuccess2">Registration Expiry date <span class="required">*</span></label>
 											<input type="text" class="form-control datetype" id="expiry_date" name="expiry_date" value="{{ old('expiry_date') }}" />
 											<small class="text-danger">
 		                    {{ $errors->first('expiry_date',':message') }}
 		                  </small>
 										</div>
 
-										<div class="col-md-6 col-sm-6  form-group has-feedback">
+										<div class="col-md-3 col-sm-3  form-group has-feedback">
+											<label for="inputSuccess2">Insurance start date <span class="required">*</span></label>
+											<input type="text" class="form-control datetype" id="insurance_start_date" name="insurance_start_date" value="{{ old('insurance_start_date') }}" />
+											<small class="text-danger">
+		                    {{ $errors->first('insurance_start_date',':message') }}
+		                  </small>
+										</div>
+
+										<div class="col-md-3 col-sm-3  form-group has-feedback">
 											<label for="inputSuccess2">Insurance expiry date <span class="required">*</span></label>
 											<input type="text" class="form-control datetype" id="insurance_expiry_date" name="insurance_expiry_date" value="{{ old('insurance_expiry_date') }}" />
 											<small class="text-danger">
 		                    {{ $errors->first('insurance_expiry_date',':message') }}
+		                  </small>
+										</div>
+
+										<div class="col-md-3 col-sm-3  form-group has-feedback">
+											<label for="inputSuccess2">Previous insurance file</label>
+											<input type="file" class="form-control" id="previous_insurance_file" name="previous_insurance_file" />
+											<small class="text-danger">
+		                    {{ $errors->first('previous_insurance_file',':message') }}
+		                  </small>
+										</div>
+
+										<div class="col-md-3 col-sm-3  form-group has-feedback">
+											<label for="inputSuccess2">New insurance file</label>
+											<input type="file" class="form-control" id="new_insurance_file" name="new_insurance_file" />
+											<small class="text-danger">
+		                    {{ $errors->first('new_insurance_file',':message') }}
 		                  </small>
 										</div>
 
@@ -213,7 +245,7 @@
 										</div>
 
 										<div class="col-md-6 col-sm-6  form-group has-feedback">
-											<label for="inputSuccess2">Permit number <span class="required">*</span></label>
+											<label for="inputSuccess2">Permit number</label>
 											<input type="text" class="form-control" id="permit_number" name="permit_number" value="{{ old('permit_number') }}" />
 											<small class="text-danger">
 		                    {{ $errors->first('permit_number',':message') }}
@@ -294,29 +326,30 @@
 @push('pagespecificjs')
 <script>
 $(document).ready(function(){
-    $('#finance_type').on('change', function(){
-    		var finance_type = $(this).val(); 
-    		if(finance_type== 1)
-    		{
-    		$('#financecompany_id').val('');
-        $("#financecompany_div").show();
-      	}
-      	else
-      	{
-				$('#financecompany_id').val('');
-        $("#financecompany_div").hide();
-      	}
-    });
+$('#finance_type').on('change', function(){
+	var finance_type = $(this).val(); 
+	if(finance_type== 1)
+	{
+	$('#financecompany_id').val('');
+    $("#financecompany_div").show();
+  	}
+  	else
+  	{
+	$('#financecompany_id').val('');
+    $("#financecompany_div").hide();
+  	}
+});
 
-    var f_val = $( "#finance_type option:selected" ).val();
-    		if(f_val== 1)
-    		{
-        $("#financecompany_div").show();
-      	}
-      	else
-      	{
-        $("#financecompany_div").hide();
-      	}
+var f_val = $( "#finance_type option:selected" ).val();
+	if(f_val== 1)
+	{
+    $("#financecompany_div").show();
+  	}
+  	else
+  	{
+    $("#financecompany_div").hide();
+  	}
 });
 </script>
+@include('admin.vehicleDetails.vehicledetailsJs') {{-- Show product name dependent field based on product type --}}
 @endpush

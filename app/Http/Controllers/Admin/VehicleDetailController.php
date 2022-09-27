@@ -60,9 +60,36 @@ class VehicleDetailController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(vehicleDetailsValidation $request)
+    //public function store(Request $request)
     {
+        $request->validate([
+        'rc_image' => 'required|mimes:csv,txt,xlx,xls,pdf,png,jpg,jpeg|max:500',
+        'previous_insurance_file' => 'required|mimes:csv,txt,xlx,xls,pdf,png,jpg,jpeg|max:500',
+        'new_insurance_file' => 'required|mimes:csv,txt,xlx,xls,pdf,png,jpg,jpeg|max:500'
+        ]);
+
+        $fileName_rc_image = $fileName_previous_insurance_file = $fileName_new_insurance_file = '';
+        if($request->hasFile('rc_image')){
+        $file_rc_image = $request->file('rc_image');
+        $fileName_rc_image = time().'_'.$file_rc_image->getClientOriginalName();
+        $filePath = $file_rc_image->storeAs('uploads/file_rc_image', $fileName_rc_image, 'public');
+        }
+
+        if($request->hasFile('previous_insurance_file')){
+        $previous_insurance_file = $request->file('previous_insurance_file');
+        $fileName_previous_insurance_file = time().'_'.$previous_insurance_file->getClientOriginalName();
+        $filePath = $previous_insurance_file->storeAs('uploads/previous_insurance_file', $fileName_previous_insurance_file, 'public');
+        }
+
+        if($request->hasFile('new_insurance_file')){
+        $new_insurance_file = $request->file('new_insurance_file');
+        $fileName_new_insurance_file = time().'_'.$new_insurance_file->getClientOriginalName();
+        $filePath = $new_insurance_file->storeAs('uploads/new_insurance_file', $fileName_new_insurance_file, 'public');
+        }
+
         $registration_date = Carbon::createFromFormat('d/m/Y', $request->registration_date)->format('Y-m-d');
-        //$expiry_date = Carbon::createFromFormat('d/m/Y', $request->expiry_date)->format('Y-m-d');
+        $expiry_date = Carbon::createFromFormat('d/m/Y', $request->expiry_date)->format('Y-m-d');
+        $insurance_start_date = Carbon::createFromFormat('d/m/Y', $request->insurance_start_date)->format('Y-m-d');
         $insurance_expiry_date = Carbon::createFromFormat('d/m/Y', $request->insurance_expiry_date)->format('Y-m-d');
         $fitness_expiry_date = Carbon::createFromFormat('d/m/Y', $request->fitness_expiry_date)->format('Y-m-d');
         $mv_tax_expiry_date = Carbon::createFromFormat('d/m/Y', $request->mv_tax_expiry_date)->format('Y-m-d');
@@ -83,11 +110,15 @@ class VehicleDetailController extends Controller
         $data->customer_email = $request->customer_email;
         $data->customer_address = $request->customer_address;
         $data->vehicle_number = $request->vehicle_number;
-        $data->registration_number = $request->registration_number;
+        //$data->registration_number = $request->registration_number;
         $data->registration_date = $registration_date;
-        //$data->expiry_date = $expiry_date;
+        $data->expiry_date = $expiry_date;
+        $data->rc_image = $fileName_rc_image;
+        $data->insurance_start_date = $insurance_start_date;
         $data->insurance_expiry_date = $insurance_expiry_date;
         $data->fitness_expiry_date = $fitness_expiry_date;
+        $data->previous_insurance_file = $fileName_previous_insurance_file;
+        $data->new_insurance_file = $fileName_new_insurance_file;
         $data->mv_tax_expiry_date = $mv_tax_expiry_date;
         $data->pucc_expiry_date = $pucc_expiry_date;
         $data->finance_type = $request->finance_type;
@@ -134,13 +165,14 @@ class VehicleDetailController extends Controller
      */
     public function edit($id)
     {
+        $vehicledetail = vehicledetail::find($id);
         $insurancecompany = insuranceCompany::Where('status',1)->orderBy('title', 'ASC')->get();
         $producttype = producttype::Where('status',1)->orderBy('title', 'ASC')->get();
-        $procuctname = procuctname::Where('status',1)->orderBy('title', 'ASC')->get();
+        $procuctname = procuctname::Where('status',1)->where('producttypes_id',$vehicledetail->producttype_id)->orderBy('title', 'ASC')->get();
         $enginetype = enginetype::Where('status',1)->orderBy('title', 'ASC')->get();
         $permittype = permittype::Where('status',1)->orderBy('title', 'ASC')->get();
         $financecompany = financecompany::Where('status',1)->orderBy('title', 'ASC')->get();
-        $vehicledetail = vehicledetail::find($id);
+
         return view('admin.vehicleDetails.updatedetails',compact('insurancecompany','producttype','procuctname','enginetype','permittype','financecompany','vehicledetail'));
     }
 
@@ -153,8 +185,28 @@ class VehicleDetailController extends Controller
      */
     public function update(vehicleDetailsValidation $request, $id)
     {
+        $fileName_rc_image = $fileName_previous_insurance_file = $fileName_new_insurance_file = '';
+        if($request->hasFile('rc_image')){
+        $file_rc_image = $request->file('rc_image');
+        $fileName_rc_image = time().'_'.$file_rc_image->getClientOriginalName();
+        $filePath = $file_rc_image->storeAs('uploads/file_rc_image', $fileName_rc_image, 'public');
+        }
+
+        if($request->hasFile('previous_insurance_file')){
+        $previous_insurance_file = $request->file('previous_insurance_file');
+        $fileName_previous_insurance_file = time().'_'.$previous_insurance_file->getClientOriginalName();
+        $filePath = $previous_insurance_file->storeAs('uploads/previous_insurance_file', $fileName_previous_insurance_file, 'public');
+        }
+
+        if($request->hasFile('new_insurance_file')){
+        $new_insurance_file = $request->file('new_insurance_file');
+        $fileName_new_insurance_file = time().'_'.$new_insurance_file->getClientOriginalName();
+        $filePath = $new_insurance_file->storeAs('uploads/new_insurance_file', $fileName_new_insurance_file, 'public');
+        }
+        
         $registration_date = Carbon::createFromFormat('d/m/Y', $request->registration_date)->format('Y-m-d');
-        //$expiry_date = Carbon::createFromFormat('d/m/Y', $request->expiry_date)->format('Y-m-d');
+        $expiry_date = Carbon::createFromFormat('d/m/Y', $request->expiry_date)->format('Y-m-d');
+        $insurance_start_date = Carbon::createFromFormat('d/m/Y', $request->insurance_start_date)->format('Y-m-d');
         $insurance_expiry_date = Carbon::createFromFormat('d/m/Y', $request->insurance_expiry_date)->format('Y-m-d');
         $fitness_expiry_date = Carbon::createFromFormat('d/m/Y', $request->fitness_expiry_date)->format('Y-m-d');
         $mv_tax_expiry_date = Carbon::createFromFormat('d/m/Y', $request->mv_tax_expiry_date)->format('Y-m-d');
@@ -175,11 +227,15 @@ class VehicleDetailController extends Controller
         $data->customer_email = $request->customer_email;
         $data->customer_address = $request->customer_address;
         $data->vehicle_number = $request->vehicle_number;
-        $data->registration_number = $request->registration_number;
+        //$data->registration_number = $request->registration_number;
         $data->registration_date = $registration_date;
-        //$data->expiry_date = $expiry_date;
+        $data->expiry_date = $expiry_date;
+        $data->rc_image = $fileName_rc_image;
+        $data->insurance_start_date = $insurance_start_date;
         $data->insurance_expiry_date = $insurance_expiry_date;
         $data->fitness_expiry_date = $fitness_expiry_date;
+        $data->previous_insurance_file = $fileName_previous_insurance_file;
+        $data->new_insurance_file = $fileName_new_insurance_file;
         $data->mv_tax_expiry_date = $mv_tax_expiry_date;
         $data->pucc_expiry_date = $pucc_expiry_date;
         $data->finance_type = $request->finance_type;
@@ -218,5 +274,19 @@ class VehicleDetailController extends Controller
     {
         $vehiclelist = vehicledetail::orderBy('id', 'DESC')->get();
         return view('admin.vehicleDetails.vehicleList',compact('vehiclelist'));
+    }
+
+    /**
+     * Get all dependent product name based on product type.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function get_dependent_project_name(Request $request)
+    {
+        $procuctNames = procuctname::where('producttypes_id',$request->product_type_id)->pluck('title','id');
+        if ($procuctNames) {
+            return response()->json(['status' => 'success', 'data' => $procuctNames], 200);
+        }
+        return response()->json(['status' => 'failed', 'message' => 'No record found'], 404);
     }
 }
