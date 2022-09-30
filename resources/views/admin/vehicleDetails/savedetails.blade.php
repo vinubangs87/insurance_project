@@ -100,7 +100,7 @@
 
 										<div class="col-md-6 col-sm-6  form-group has-feedback">
 											<label for="inputSuccess2">Customer mobile <span class="required">*</span></label>
-											<input type="text" class="form-control" id="customer_mobile" name="customer_mobile" value="{{ old('customer_mobile') }}" />
+											<input type="number" class="form-control" id="customer_mobile" name="customer_mobile" maxlength="10" pattern="[1-9]{1}[0-9]{9}" value="{{ old('customer_mobile') }}" />
 											<small class="text-danger">
 		                    {{ $errors->first('customer_mobile',':message') }}
 		                  </small>

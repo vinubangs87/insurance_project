@@ -185,6 +185,12 @@ class VehicleDetailController extends Controller
      */
     public function update(vehicleDetailsValidation $request, $id)
     {
+        $request->validate([
+        'rc_image' => 'nullable|mimes:jpg,jpeg,png,bmp,gif,svg,webp,pdf,docx|max:500',
+        'previous_insurance_file' => 'nullable|mimes:csv,txt,xlx,xls,pdf,png,jpg,jpeg|max:500',
+        'new_insurance_file' => 'nullable|mimes:csv,txt,xlx,xls,pdf,png,jpg,jpeg|max:500'
+        ]);
+
         $fileName_rc_image = $fileName_previous_insurance_file = $fileName_new_insurance_file = '';
         if($request->hasFile('rc_image')){
         $file_rc_image = $request->file('rc_image');
@@ -230,12 +236,12 @@ class VehicleDetailController extends Controller
         //$data->registration_number = $request->registration_number;
         $data->registration_date = $registration_date;
         $data->expiry_date = $expiry_date;
-        $data->rc_image = $fileName_rc_image;
+        if($request->hasFile('rc_image')){ $data->rc_image = $fileName_rc_image; }
         $data->insurance_start_date = $insurance_start_date;
         $data->insurance_expiry_date = $insurance_expiry_date;
         $data->fitness_expiry_date = $fitness_expiry_date;
-        $data->previous_insurance_file = $fileName_previous_insurance_file;
-        $data->new_insurance_file = $fileName_new_insurance_file;
+        if($request->hasFile('previous_insurance_file')){ $data->previous_insurance_file = $fileName_previous_insurance_file; }
+        if($request->hasFile('new_insurance_file')){ $data->new_insurance_file = $fileName_new_insurance_file; }
         $data->mv_tax_expiry_date = $mv_tax_expiry_date;
         $data->pucc_expiry_date = $pucc_expiry_date;
         $data->finance_type = $request->finance_type;

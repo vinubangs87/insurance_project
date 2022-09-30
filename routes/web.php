@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\VechileStatusController;
 use App\Http\Controllers\Admin\ProductTypeController;
 use App\Http\Controllers\Admin\FinanceCompanyController;
 use App\Http\Controllers\Admin\VehicleDetailController;
+use App\Http\Controllers\ViewUploadedFilesController;
 
 /*
 |--------------------------------------------------------------------------
@@ -59,5 +60,5 @@ Route::get('/vehicle/details', [VehicleDetailController::class,'vehiclerecords']
 Route::post('/get/dependent/projectName', [VehicleDetailController::class,'get_dependent_project_name'])->name('dependent.projectName');
 
 // to get uploaded files
-Route::get('/file-view/{filename}', [ViewUploadedFilesController::class,'view_store_files'])->name('file.view');
+Route::get('/file-view/{filename}/{directory}', [ViewUploadedFilesController::class,'view_store_files'])->name('file.view');
 // End admin routes

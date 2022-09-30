@@ -23,7 +23,7 @@
 									<h2>Please update the details <small style="color:red;">(* Means mandatory field)</small></h2>									
 									<div class="clearfix"></div>
 								</div>
-									<form class="form-label-left" action="{{ route('vehicledetails.update', $vehicledetail->id) }}" method="post">
+									<form class="form-label-left" action="{{ route('vehicledetails.update', $vehicledetail->id) }}" method="post" enctype='multipart/form-data'>
 										@csrf
 										{{ method_field('PUT') }}
 										<div class="col-md-6 col-sm-6  form-group has-feedback">
@@ -101,7 +101,7 @@
 
 										<div class="col-md-6 col-sm-6  form-group has-feedback">
 											<label for="inputSuccess2">Customer mobile <span class="required">*</span></label>
-											<input type="text" class="form-control" id="customer_mobile" name="customer_mobile" value="{{ $vehicledetail->customer_mobile }}" />
+											<input type="text" class="form-control" id="customer_mobile" name="customer_mobile" maxlength="10" pattern="[1-9]{1}[0-9]{9}" value="{{ $vehicledetail->customer_mobile }}" />
 											<small class="text-danger">
 		                    {{ $errors->first('customer_mobile',':message') }}
 		                  </small>
@@ -132,7 +132,13 @@
 										</div>
 
 										<div class="col-md-3 col-sm-3  form-group has-feedback">
-											<label for="inputSuccess2">Upload RC <a class="blue" href="{{ route('file.view',$vehicledetail->rc_image) }}" target="_BLANK">(Check uploaded file)</a></label>
+											<label for="inputSuccess2">Upload RC 
+												@if ($vehicledetail->rc_image)
+												<a class="blue" href="{{ route('file.view',['filename' => $vehicledetail->rc_image,'directory' => 'file_rc_image']) }}" target="_BLANK">(Check uploaded file)</a>
+												@else
+												<span class="blue">(No previous file uploaded)</span>
+												@endif
+											</label>
 											<input type="file" class="form-control" id="rc_image" name="rc_image" />
 											<small class="text-danger">
 		                    {{ $errors->first('rc_image',':message') }}
@@ -159,6 +165,8 @@
 											<label for="inputSuccess2">Registration Expiry date <span class="required">*</span>
 												@if(\Carbon\Carbon::now()->format('Y-m-d') > $vehicledetail->expiry_date) 
 													<b class=" red inactive-class">(Inactive)</b>
+												@else
+													<b class="blue">(Active)</b>
 												@endif
 											</label>
 											<input type="text" class="form-control datetype" id="expiry_date" name="expiry_date" value="{{ \Carbon\Carbon::parse($vehicledetail->expiry_date)->format('d/m/Y')  }}" placeholder="MM/DD/YYYY" />
@@ -179,6 +187,8 @@
 											<label for="inputSuccess2">Insurance expiry date <span class="required">*</span>
 												@if(\Carbon\Carbon::now()->format('Y-m-d') > $vehicledetail->insurance_expiry_date) 
 													<b class=" red inactive-class">(Inactive)</b>
+												@else
+													<b class="blue">(Active)</b>
 												@endif
 											</label>
 											<input type="text" class="form-control datetype" id="insurance_expiry_date" name="insurance_expiry_date" value="{{ \Carbon\Carbon::parse($vehicledetail->insurance_expiry_date)->format('d/m/Y') }}" />
@@ -188,7 +198,14 @@
 										</div>
 
 										<div class="col-md-3 col-sm-3  form-group has-feedback">
-											<label for="inputSuccess2">Previous insurance file</label>
+											<label for="inputSuccess2">Previous insurance file 
+												@if ($vehicledetail->previous_insurance_file)
+												<a class="blue" href="{{ route('file.view',['filename' => $vehicledetail->previous_insurance_file,'directory' => 'previous_insurance_file']) }}" target="_BLANK">(Check uploaded file)</a>
+												@else
+												<span class="blue">(No previous file uploaded)</span>
+												@endif
+
+											</label>
 											<input type="file" class="form-control" id="previous_insurance_file" name="previous_insurance_file" />
 											<small class="text-danger">
 		                    {{ $errors->first('previous_insurance_file',':message') }}
@@ -196,7 +213,13 @@
 										</div>
 
 										<div class="col-md-3 col-sm-3  form-group has-feedback">
-											<label for="inputSuccess2">New insurance file</label>
+											<label for="inputSuccess2">New insurance file 
+												@if ($vehicledetail->new_insurance_file)
+												<a class="blue" href="{{ route('file.view',['filename' => $vehicledetail->new_insurance_file,'directory' => 'new_insurance_file']) }}" target="_BLANK">(Check uploaded file)</a>
+												@else
+												<span class="blue">(No previous file uploaded)</span>
+												@endif
+											</label>
 											<input type="file" class="form-control" id="new_insurance_file" name="new_insurance_file" />
 											<small class="text-danger">
 		                    {{ $errors->first('new_insurance_file',':message') }}
@@ -207,6 +230,8 @@
 											<label for="inputSuccess2">Fitness expiry date <span class="required">*</span>
 												@if(\Carbon\Carbon::now()->format('Y-m-d') > $vehicledetail->fitness_expiry_date) 
 													<b class=" red inactive-class">(Inactive)</b>
+												@else
+													<b class="blue">(Active)</b>
 												@endif
 											</label>
 											<input type="text" class="form-control datetype" id="fitness_expiry_date" name="fitness_expiry_date" value="{{ \Carbon\Carbon::parse($vehicledetail->fitness_expiry_date)->format('d/m/Y') }}" />
@@ -219,6 +244,8 @@
 											<label for="inputSuccess2">MV tax expiry date <span class="required">*</span>
 												@if(\Carbon\Carbon::now()->format('Y-m-d') > $vehicledetail->mv_tax_expiry_date) 
 													<b class=" red inactive-class">(Inactive)</b>
+												@else
+													<b class="blue">(Active)</b>
 												@endif
 											</label>
 											<input type="text" class="form-control datetype" id="mv_tax_expiry_date" name="mv_tax_expiry_date" value="{{ \Carbon\Carbon::parse($vehicledetail->mv_tax_expiry_date)->format('d/m/Y') }}" />
@@ -231,6 +258,8 @@
 											<label for="inputSuccess2">PUCC expiry date <span class="required">*</span>
 												@if(\Carbon\Carbon::now()->format('Y-m-d') > $vehicledetail->pucc_expiry_date) 
 													<b class=" red inactive-class">(Inactive)</b>
+												@else
+													<b class="blue">(Active)</b>
 												@endif
 											</label>
 											<input type="text" class="form-control datetype" id="pucc_expiry_date" name="pucc_expiry_date" value="{{ \Carbon\Carbon::parse($vehicledetail->pucc_expiry_date)->format('d/m/Y') }}" />
@@ -277,6 +306,8 @@
 											<label for="inputSuccess2">Permit valid upto <span class="required">*</span>
 												@if(\Carbon\Carbon::now()->format('Y-m-d') > $vehicledetail->permit_valid_upto_date) 
 													<b class=" red inactive-class">(Inactive)</b>
+												@else
+													<b class="blue">(Active)</b>
 												@endif
 											</label>
 											<input type="text" class="form-control datetype" id="permit_valid_upto_date" name="permit_valid_upto_date" value="{{ \Carbon\Carbon::parse($vehicledetail->permit_valid_upto_date)->format('d/m/Y') }}" />
@@ -305,6 +336,8 @@
 											<label for="inputSuccess2">Policy end date <span class="required">*</span>
 												@if(\Carbon\Carbon::now()->format('Y-m-d') > $vehicledetail->policy_end_date) 
 													<b class=" red inactive-class">(Inactive)</b>
+												@else
+													<b class="blue">(Active)</b>
 												@endif
 											</label>
 											<input type="text" class="form-control datetype" id="policy_end_date" name="policy_end_date" value="{{ \Carbon\Carbon::parse($vehicledetail->policy_end_date)->format('d/m/Y') }}" />

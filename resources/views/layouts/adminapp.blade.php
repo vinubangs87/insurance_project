@@ -33,7 +33,17 @@
 
     <!-- Custom Theme Style -->
      <link href="{{ asset('admin/build/css/custom.min.css') }}" rel="stylesheet"> 
+     <style type="text/css">
+       .inactive-class {
+         animation: blinker 1s linear infinite;
+       }
 
+       @keyframes blinker {
+         50% {
+           opacity: 0;
+         }
+       }
+     </style>
     @stack('pagespecificCss')
   </head>
 

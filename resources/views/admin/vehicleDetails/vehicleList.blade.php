@@ -72,7 +72,7 @@
                           <td>{{ $vehiclelist->policy_number }}</td>
                           
                           	@if((\Carbon\Carbon::now()->format('Y-m-d') > $vehiclelist->expiry_date) || (\Carbon\Carbon::now()->format('Y-m-d') > $vehiclelist->insurance_expiry_date) || (\Carbon\Carbon::now()->format('Y-m-d') > $vehiclelist->fitness_expiry_date) || (\Carbon\Carbon::now()->format('Y-m-d') > $vehiclelist->mv_tax_expiry_date) || (\Carbon\Carbon::now()->format('Y-m-d') > $vehiclelist->pucc_expiry_date) || (\Carbon\Carbon::now()->format('Y-m-d') > $vehiclelist->permit_valid_upto_date) || (\Carbon\Carbon::now()->format('Y-m-d') > $vehiclelist->policy_end_date))
-                          	<td class="red"><div class="status-inactive">Inactive</div></td>
+                          	<td class="red inactive-class"><div class="status-inactive">Inactive</div></td>
                           	@else
 	                          <td class="green"><div class="status-active" title="Active">Active</div></td>
 	                          @endif

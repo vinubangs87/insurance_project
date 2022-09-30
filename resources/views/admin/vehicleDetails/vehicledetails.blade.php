@@ -59,17 +59,24 @@
 		                        </div>
 		                        <!-- /.col -->
 		                        <div class="col-sm-4 invoice-col">
-		                          <b>Status:</b> 
-		                          @if((\Carbon\Carbon::now()->format('Y-m-d') > $vehicledetail->registration_date) || (\Carbon\Carbon::now()->format('Y-m-d') > $vehicledetail->fitness_expiry_date) || (\Carbon\Carbon::now()->format('Y-m-d') > $vehicledetail->mv_tax_expiry_date) || (\Carbon\Carbon::now()->format('Y-m-d') > $vehicledetail->insurance_expiry_date) || (\Carbon\Carbon::now()->format('Y-m-d') > $vehicledetail->pucc_expiry_date) || (\Carbon\Carbon::now()->format('Y-m-d') > $vehicledetail->permit_valid_upto_date) || (\Carbon\Carbon::now()->format('Y-m-d') > $vehicledetail->policy_start_date) || (\Carbon\Carbon::now()->format('Y-m-d') > $vehicledetail->policy_end_date))
-		                          <span class="red">Inactive</span>
+		                          <b>Status:</b>
+		                          @if((\Carbon\Carbon::now()->format('Y-m-d') > $vehicledetail->expiry_date) || (\Carbon\Carbon::now()->format('Y-m-d') > $vehicledetail->insurance_expiry_date) || (\Carbon\Carbon::now()->format('Y-m-d') > $vehicledetail->fitness_expiry_date) || (\Carbon\Carbon::now()->format('Y-m-d') > $vehicledetail->mv_tax_expiry_date) || (\Carbon\Carbon::now()->format('Y-m-d') > $vehicledetail->pucc_expiry_date) || (\Carbon\Carbon::now()->format('Y-m-d') > $vehicledetail->permit_valid_upto_date) || (\Carbon\Carbon::now()->format('Y-m-d') > $vehicledetail->policy_end_date))
+		                          <b class="red inactive-class">Inactive</b>
 		                          @else
-		                          <span>Active</span>
+		                          <b class="blue">Active</b>
 		                          @endif
 		                          <br>
 		                          {{-- <br>
 		                          <b>Registration date:</b> {{ $vehicledetail->registration_date }} --}}
 		                          <br>
-		                          <b>Registration/Expiry date:</b> <span  class="{{ \Carbon\Carbon::now()->format('Y-m-d') > $vehicledetail->registration_date ? 'red': '' }}">{{ \Carbon\Carbon::parse($vehicledetail->registration_date)->format('d/m/Y') }}</span> <br>
+		                          <b>Registration date:</b> {{ \Carbon\Carbon::parse($vehicledetail->registration_date)->format('d/m/Y') }} <br>
+		                          <b>Registration Expiry date:</b> <span  class="{{ \Carbon\Carbon::now()->format('Y-m-d') > $vehicledetail->expiry_date ? 'red': 'blue' }}">{{ \Carbon\Carbon::parse($vehicledetail->expiry_date)->format('d/m/Y') }}</span> <br>
+		                          <b>Uploaded RC:</b> 
+		                          @if ($vehicledetail->rc_image)
+							        <a class="blue" href="{{ route('file.view',['filename' => $vehicledetail->rc_image,'directory' => 'file_rc_image']) }}" target="_BLANK">Check uploaded file</a>
+								    @else
+								        <span style="color:purple">No file uploaded</span>
+								    @endif <br>
 		                          <b>Engine number:</b> {{ $vehicledetail->engine_number }}
 		                          <br>
 		                          <b>chasis_number:</b> {{ $vehicledetail->chasis_number }}                                  
@@ -83,32 +90,45 @@
 		                      <div class="row">
 		                        <!-- /.col -->
 		                        <div class="col-md-6">
-		                          <p class="lead">Validity</p>
+		                          <p class="lead">Insurance Details:</p>
 		                          <div class="table-responsive">
 		                            <table class="table">
 		                              <tbody>
 		                                <tr>
-		                                  <th>Fitness/Regn:</th>
-		                                  <td class="{{ \Carbon\Carbon::now()->format('Y-m-d') > $vehicledetail->fitness_expiry_date ? 'red': '' }}">{{ \Carbon\Carbon::parse($vehicledetail->fitness_expiry_date)->format('d/m/Y') }}</td>
+		                                  <th>Insurance start date:</th>
+		                                  <td>{{ \Carbon\Carbon::parse($vehicledetail->insurance_start_date)->format('d/m/Y') }}</td>
 		                                </tr>
 		                                <tr>
-		                                  <th>MV Tax: </th>
-		                                  <td class="{{ \Carbon\Carbon::now()->format('Y-m-d') > $vehicledetail->mv_tax_expiry_date ? 'red': '' }}">{{ \Carbon\Carbon::parse($vehicledetail->mv_tax_expiry_date)->format('d/m/Y') }}</td>
+		                                  <th>Insurance expiry date:</th>
+		                                  <td class="{{ \Carbon\Carbon::now()->format('Y-m-d') > $vehicledetail->insurance_expiry_date ? 'red': 'blue' }}">{{ \Carbon\Carbon::parse($vehicledetail->insurance_expiry_date)->format('d/m/Y') }}</td>
 		                                </tr>
 		                                <tr>
-		                                  <th>Insurance:</th>
-		                                  <td class="{{ \Carbon\Carbon::now()->format('Y-m-d') > $vehicledetail->insurance_expiry_date ? 'red': '' }}">{{ \Carbon\Carbon::parse($vehicledetail->insurance_expiry_date)->format('d/m/Y') }}</td>
+		                                  <th>Previous insurance file:</th>
+		                                  <td>
+		                                  @if ($vehicledetail->previous_insurance_file)
+											<a class="blue" href="{{ route('file.view',['filename' => $vehicledetail->previous_insurance_file,'directory' => 'previous_insurance_file']) }}" target="_BLANK">(Check uploaded file)</a>
+											@else
+											<span style="color:purple">(No previous file uploaded)</span>
+											@endif
+											</td>
+
 		                                </tr>
 		                                <tr>
-		                                  <th>PUCC:</th>
-		                                  <td class="{{ \Carbon\Carbon::now()->format('Y-m-d') > $vehicledetail->pucc_expiry_date ? 'red': '' }}">{{ \Carbon\Carbon::parse($vehicledetail->pucc_expiry_date)->format('d/m/Y') }}</td>
+		                                  <th>New insurance file:</th>
+		                                  <td>
+		                                  @if ($vehicledetail->new_insurance_file)
+											<a class="blue" href="{{ route('file.view',['filename' => $vehicledetail->new_insurance_file,'directory' => 'new_insurance_file']) }}" target="_BLANK">(Check uploaded file)</a>
+											@else
+											<span style="color:purple">(No previous file uploaded)</span>
+											@endif
+											</td>
 		                                </tr>
 		                              </tbody>
 		                            </table>
 		                          </div>
 		                        </div>
 		                        <div class="col-md-6">
-		                          <p class="lead">Permit detail</p>
+		                          <p class="lead">Permit/Validity Details:</p>
 		                          <div class="table-responsive">
 		                            <table class="table">
 		                              <tbody>
@@ -117,8 +137,20 @@
 		                                  <td>{{ $vehicledetail->permit_number }}</td>
 		                                </tr>
 		                                <tr>
-		                                  <th>Valid upto: </th>
-		                                  <td class="{{ \Carbon\Carbon::now()->format('Y-m-d') > $vehicledetail->permit_valid_upto_date ? 'red': '' }}">{{ \Carbon\Carbon::parse($vehicledetail->permit_valid_upto_date)->format('d/m/Y') }}</td>
+		                                  <th>Permit valid upto: </th>
+		                                  <td class="{{ \Carbon\Carbon::now()->format('Y-m-d') > $vehicledetail->permit_valid_upto_date ? 'red': 'blue' }}">{{ \Carbon\Carbon::parse($vehicledetail->permit_valid_upto_date)->format('d/m/Y') }}</td>
+		                                </tr>
+		                                <tr>
+		                                  <th>Fitness expiry date:</th>
+		                                  <td class="{{ \Carbon\Carbon::now()->format('Y-m-d') > $vehicledetail->fitness_expiry_date ? 'red': 'blue' }}">{{ \Carbon\Carbon::parse($vehicledetail->fitness_expiry_date)->format('d/m/Y') }}</td>
+		                                </tr>
+		                                <tr>
+		                                  <th>MV tax expiry date: </th>
+		                                  <td class="{{ \Carbon\Carbon::now()->format('Y-m-d') > $vehicledetail->mv_tax_expiry_date ? 'red': 'blue' }}">{{ \Carbon\Carbon::parse($vehicledetail->mv_tax_expiry_date)->format('d/m/Y') }}</td>
+		                                </tr>
+		                                <tr>
+		                                  <th>PUCC expiry date:</th>
+		                                  <td class="{{ \Carbon\Carbon::now()->format('Y-m-d') > $vehicledetail->pucc_expiry_date ? 'red': 'blue' }}">{{ \Carbon\Carbon::parse($vehicledetail->pucc_expiry_date)->format('d/m/Y') }}</td>
 		                                </tr>
 		                              </tbody>
 		                            </table>
@@ -126,7 +158,7 @@
 		                        </div>
 
 		                        <div class="col-md-6">
-		                          <p class="lead">Finance detail</p>
+		                          <p class="lead">Finance Details:</p>
 		                          <div class="table-responsive">
 		                            <table class="table">
 		                              <tbody>
@@ -146,7 +178,7 @@
 		                        </div>
 
 		                         <div class="col-md-6">
-		                          <p class="lead">Policy detail</p>
+		                          <p class="lead">Policy Details:</p>
 		                          <div class="table-responsive">
 		                            <table class="table">
 		                              <tbody>
@@ -156,11 +188,11 @@
 		                                </tr>
 		                                <tr>
 		                                  <th>Policy start date: </th>
-		                                  <td class="{{ \Carbon\Carbon::now()->format('Y-m-d') > $vehicledetail->policy_start_date ? 'red': '' }}">{{ \Carbon\Carbon::parse($vehicledetail->policy_start_date)->format('d/m/Y') }}</td>
+		                                  <td>{{ \Carbon\Carbon::parse($vehicledetail->policy_start_date)->format('d/m/Y') }}</td>
 		                                </tr>
 		                                <tr>
 		                                  <th>Policy end date: </th>
-		                                  <td class="{{ \Carbon\Carbon::now()->format('Y-m-d') > $vehicledetail->policy_end_date ? 'red': '' }}">{{ \Carbon\Carbon::parse($vehicledetail->policy_end_date)->format('d/m/Y') }}</td>
+		                                  <td class="{{ \Carbon\Carbon::now()->format('Y-m-d') > $vehicledetail->policy_end_date ? 'red': 'blue' }}">{{ \Carbon\Carbon::parse($vehicledetail->policy_end_date)->format('d/m/Y') }}</td>
 		                                </tr>
 		                              </tbody>
 		                            </table>

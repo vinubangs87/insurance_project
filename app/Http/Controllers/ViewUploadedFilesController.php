@@ -20,9 +20,9 @@ class ViewUploadedFilesController extends Controller
         $this->middleware('auth');
     }
 
-    public function view_store_files($filename)
+    public function view_store_files($filename,$directory)
     {
-        $path = storage_path('app/public/uploads/'.$filename);
+        $path = storage_path('app/public/uploads/'.$directory.'/'.$filename);
         if (!File::exists($path)) 
         {
         abort(404);
