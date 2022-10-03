@@ -100,7 +100,7 @@
 
 										<div class="col-md-6 col-sm-6  form-group has-feedback">
 											<label for="inputSuccess2">Customer mobile <span class="required">*</span></label>
-											<input type="number" class="form-control" id="customer_mobile" name="customer_mobile" maxlength="10" pattern="[1-9]{1}[0-9]{9}" value="{{ old('customer_mobile') }}" />
+											<input type="text" class="form-control" id="customer_mobile" name="customer_mobile" maxlength="10" pattern="[1-9]{1}[0-9]{9}" value="{{ old('customer_mobile') }}" />
 											<small class="text-danger">
 		                    {{ $errors->first('customer_mobile',':message') }}
 		                  </small>
@@ -308,6 +308,14 @@
 		                  </small>
 										</div>
 
+										<div class="col-md-6 col-sm-6  form-group has-feedback">
+											<label for="inputSuccess2">Insurance amount <span class="required">*</span></label>
+											<input type="text" class="form-control" id="insurance_amount" name="insurance_amount" value="{{ old('insurance_amount') }}" />
+											<small class="text-danger">
+		                    {{ $errors->first('insurance_amount',':message') }}
+		                  </small>
+										</div>
+
 										<div class="ln_solid"></div>
 											<div class="col-md-12 col-sm-12  offset-md-3">
 												<button type="submit" class="btn btn-success">Submit</button>
@@ -319,6 +327,7 @@
 						</div>
 
 					</div>
+				
 	</div>
 </div>        
 @endsection

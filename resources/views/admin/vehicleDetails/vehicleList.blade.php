@@ -72,7 +72,7 @@
                           <td>{{ $vehiclelist->policy_number }}</td>
                           
                           	@if((\Carbon\Carbon::now()->format('Y-m-d') > $vehiclelist->expiry_date) || (\Carbon\Carbon::now()->format('Y-m-d') > $vehiclelist->insurance_expiry_date) || (\Carbon\Carbon::now()->format('Y-m-d') > $vehiclelist->fitness_expiry_date) || (\Carbon\Carbon::now()->format('Y-m-d') > $vehiclelist->mv_tax_expiry_date) || (\Carbon\Carbon::now()->format('Y-m-d') > $vehiclelist->pucc_expiry_date) || (\Carbon\Carbon::now()->format('Y-m-d') > $vehiclelist->permit_valid_upto_date) || (\Carbon\Carbon::now()->format('Y-m-d') > $vehiclelist->policy_end_date))
-                          	<td class="red inactive-class"><div class="status-inactive">Inactive</div></td>
+                          	<td class="red inactive-class"><div class="status-inactive"><b>INACTIVE</b></div></td>
                           	@else
 	                          <td class="green"><div class="status-active" title="Active">Active</div></td>
 	                          @endif
@@ -83,7 +83,7 @@
                               <button type="submit" class="btn btn-danger btn-sm delete" title='Delete'>Delete</button>
                           </form>
 
-                          <a href="{{ route('vehicledetails.edit', $vehiclelist->id) }}" class="btn btn-primary btn-sm">Edit</a> <a href="{{ route('vehicledetails.show', $vehiclelist->id) }}"  class="btn btn-primary btn-sm">View</a></td>
+                          <a href="{{ route('vehicledetails.edit', $vehiclelist->id) }}" class="btn btn-primary btn-sm">Edit</a> <a href="{{ route('vehicledetails.show', $vehiclelist->id) }}"  class="btn btn-primary btn-sm">View</a> <a href="{{ route('insurance.amount.show', $vehiclelist->id) }}"  class="btn btn-primary btn-sm">Update insurance amount</a></td>
                         </tr>
                       	@endforeach
                       </tbody>

@@ -7,6 +7,8 @@
 		<div class="page-title">
 			<div class="title_left">
 				<h3>Vehicle update detail form</h3>
+												<a href="{{ route('vehicledetails.show', $vehicledetail->id) }}" class="btn btn-primary">View this customer</a>
+												<a href="{{ route('insurance.amount.show', $vehicledetail->id) }}" class="btn btn-primary">Insurance amount history</a>
 			</div>
 		</div>
 		<div class="clearfix"></div>
@@ -164,9 +166,9 @@
 										<div class="col-md-3 col-sm-3  form-group has-feedback">
 											<label for="inputSuccess2">Registration Expiry date <span class="required">*</span>
 												@if(\Carbon\Carbon::now()->format('Y-m-d') > $vehicledetail->expiry_date) 
-													<b class=" red inactive-class">(Inactive)</b>
+													<b class=" red inactive-class">(INACTIVE)</b>
 												@else
-													<b class="blue">(Active)</b>
+													<b class="blue">(ACTIVE)</b>
 												@endif
 											</label>
 											<input type="text" class="form-control datetype" id="expiry_date" name="expiry_date" value="{{ \Carbon\Carbon::parse($vehicledetail->expiry_date)->format('d/m/Y')  }}" placeholder="MM/DD/YYYY" />
@@ -186,9 +188,9 @@
 										<div class="col-md-3 col-sm-3  form-group has-feedback">
 											<label for="inputSuccess2">Insurance expiry date <span class="required">*</span>
 												@if(\Carbon\Carbon::now()->format('Y-m-d') > $vehicledetail->insurance_expiry_date) 
-													<b class=" red inactive-class">(Inactive)</b>
+													<b class=" red inactive-class">(INACTIVE)</b>
 												@else
-													<b class="blue">(Active)</b>
+													<b class="blue">(ACTIVE)</b>
 												@endif
 											</label>
 											<input type="text" class="form-control datetype" id="insurance_expiry_date" name="insurance_expiry_date" value="{{ \Carbon\Carbon::parse($vehicledetail->insurance_expiry_date)->format('d/m/Y') }}" />
@@ -229,9 +231,9 @@
 										<div class="col-md-6 col-sm-6  form-group has-feedback">
 											<label for="inputSuccess2">Fitness expiry date <span class="required">*</span>
 												@if(\Carbon\Carbon::now()->format('Y-m-d') > $vehicledetail->fitness_expiry_date) 
-													<b class=" red inactive-class">(Inactive)</b>
+													<b class=" red inactive-class">(INACTIVE)</b>
 												@else
-													<b class="blue">(Active)</b>
+													<b class="blue">(ACTIVE)</b>
 												@endif
 											</label>
 											<input type="text" class="form-control datetype" id="fitness_expiry_date" name="fitness_expiry_date" value="{{ \Carbon\Carbon::parse($vehicledetail->fitness_expiry_date)->format('d/m/Y') }}" />
@@ -243,9 +245,9 @@
 										<div class="col-md-6 col-sm-6  form-group has-feedback">
 											<label for="inputSuccess2">MV tax expiry date <span class="required">*</span>
 												@if(\Carbon\Carbon::now()->format('Y-m-d') > $vehicledetail->mv_tax_expiry_date) 
-													<b class=" red inactive-class">(Inactive)</b>
+													<b class=" red inactive-class">(INACTIVE)</b>
 												@else
-													<b class="blue">(Active)</b>
+													<b class="blue">(ACTIVE)</b>
 												@endif
 											</label>
 											<input type="text" class="form-control datetype" id="mv_tax_expiry_date" name="mv_tax_expiry_date" value="{{ \Carbon\Carbon::parse($vehicledetail->mv_tax_expiry_date)->format('d/m/Y') }}" />
@@ -257,9 +259,9 @@
 										<div class="col-md-6 col-sm-6  form-group has-feedback">
 											<label for="inputSuccess2">PUCC expiry date <span class="required">*</span>
 												@if(\Carbon\Carbon::now()->format('Y-m-d') > $vehicledetail->pucc_expiry_date) 
-													<b class=" red inactive-class">(Inactive)</b>
+													<b class=" red inactive-class">(INACTIVE)</b>
 												@else
-													<b class="blue">(Active)</b>
+													<b class="blue">(ACTIVE)</b>
 												@endif
 											</label>
 											<input type="text" class="form-control datetype" id="pucc_expiry_date" name="pucc_expiry_date" value="{{ \Carbon\Carbon::parse($vehicledetail->pucc_expiry_date)->format('d/m/Y') }}" />
@@ -305,9 +307,9 @@
 										<div class="col-md-6 col-sm-6  form-group has-feedback">
 											<label for="inputSuccess2">Permit valid upto <span class="required">*</span>
 												@if(\Carbon\Carbon::now()->format('Y-m-d') > $vehicledetail->permit_valid_upto_date) 
-													<b class=" red inactive-class">(Inactive)</b>
+													<b class=" red inactive-class">(INACTIVE)</b>
 												@else
-													<b class="blue">(Active)</b>
+													<b class="blue">(ACTIVE)</b>
 												@endif
 											</label>
 											<input type="text" class="form-control datetype" id="permit_valid_upto_date" name="permit_valid_upto_date" value="{{ \Carbon\Carbon::parse($vehicledetail->permit_valid_upto_date)->format('d/m/Y') }}" />
@@ -335,9 +337,9 @@
 										<div class="col-md-6 col-sm-6  form-group has-feedback">
 											<label for="inputSuccess2">Policy end date <span class="required">*</span>
 												@if(\Carbon\Carbon::now()->format('Y-m-d') > $vehicledetail->policy_end_date) 
-													<b class=" red inactive-class">(Inactive)</b>
+													<b class=" red inactive-class">(INACTIVE)</b>
 												@else
-													<b class="blue">(Active)</b>
+													<b class="blue">(ACTIVE)</b>
 												@endif
 											</label>
 											<input type="text" class="form-control datetype" id="policy_end_date" name="policy_end_date" value="{{ \Carbon\Carbon::parse($vehicledetail->policy_end_date)->format('d/m/Y') }}" />
@@ -370,10 +372,17 @@
 		                  </small>
 										</div>
 
+										<div class="col-md-6 col-sm-6  form-group has-feedback">
+											<label for="inputSuccess2">Insurance amount <span class="required">*</span></label>
+											<input type="text" class="form-control" id="insurance_amount" name="insurance_amount" value="{{ $vehicledetail->insurance_amount }}" />
+											<small class="text-danger">
+		                    {{ $errors->first('insurance_amount',':message') }}
+		                  </small>
+										</div>
+
 										<div class="ln_solid"></div>
 											<div class="col-md-12 col-sm-12  offset-md-3">
 												<button type="submit" class="btn btn-success">Update</button>
-												<a href="{{ route('vehicledetails.show', $vehicledetail->id) }}" class="btn btn-primary">View this customer</a>
 											</div>
 
 									</form>

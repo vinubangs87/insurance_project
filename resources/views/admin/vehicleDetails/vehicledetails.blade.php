@@ -41,10 +41,10 @@
 		                        <div class="col-sm-4 invoice-col">
 		                          <b> Vehicle detail: </b>
 		                          <address>
-                                      <strong>Vehicle number: </strong>{{ $vehicledetail->vehicle_number }}
+                                      <strong>Vehicle/Registration number: </strong>{{ $vehicledetail->vehicle_number }}
                                       <br/>
-                                      <strong>Registration number: </strong>{{ $vehicledetail->registration_number }}
-                                      <br/>
+                                      {{-- <strong>Registration number: </strong>{{ $vehicledetail->registration_number }}
+                                      <br/> --}}
                                       <strong>Product type: </strong>{{ $vehicledetail->pt_title }}
                                       <br/>
                                       <strong>Product name: </strong>{{ $vehicledetail->pn_title }}
@@ -61,9 +61,9 @@
 		                        <div class="col-sm-4 invoice-col">
 		                          <b>Status:</b>
 		                          @if((\Carbon\Carbon::now()->format('Y-m-d') > $vehicledetail->expiry_date) || (\Carbon\Carbon::now()->format('Y-m-d') > $vehicledetail->insurance_expiry_date) || (\Carbon\Carbon::now()->format('Y-m-d') > $vehicledetail->fitness_expiry_date) || (\Carbon\Carbon::now()->format('Y-m-d') > $vehicledetail->mv_tax_expiry_date) || (\Carbon\Carbon::now()->format('Y-m-d') > $vehicledetail->pucc_expiry_date) || (\Carbon\Carbon::now()->format('Y-m-d') > $vehicledetail->permit_valid_upto_date) || (\Carbon\Carbon::now()->format('Y-m-d') > $vehicledetail->policy_end_date))
-		                          <b class="red inactive-class">Inactive</b>
+		                          <b class="red inactive-class">INACTIVE</b>
 		                          @else
-		                          <b class="blue">Active</b>
+		                          <b class="blue">ACTIVE</b>
 		                          @endif
 		                          <br>
 		                          {{-- <br>
@@ -122,6 +122,10 @@
 											<span style="color:purple">(No previous file uploaded)</span>
 											@endif
 											</td>
+		                                </tr>
+		                                <tr>
+		                                  <th>Insurance amount:</th>
+		                                  <td>{{ $vehicledetail->insurance_amount }}</td>
 		                                </tr>
 		                              </tbody>
 		                            </table>
@@ -208,6 +212,8 @@
 		                        <div class=" ">
 		                         {{--  <button class="btn btn-primary pull-right" onclick="window.print();" style="margin-right: 5px;"><i class="fa fa-download"></i> Print</button> --}}
 		                         <a href="{{ route('vehicledetails.edit', $vehicledetail->id) }}" class="btn btn-primary">Update this customer</a>
+
+								<a href="{{ route('insurance.amount.show', $vehicledetail->id) }}" class="btn btn-primary">Insurance amount history</a>
 		                        </div>
 		                      </div>
 		                    </section>

@@ -59,6 +59,12 @@ Route::get('/vehicle/details', [VehicleDetailController::class,'vehiclerecords']
 
 Route::post('/get/dependent/projectName', [VehicleDetailController::class,'get_dependent_project_name'])->name('dependent.projectName');
 
+Route::get('/insurance/amount/update/{id}', [VehicleDetailController::class,'insurance_amount_show'])->name('insurance.amount.show');
+
+Route::post('/add/fullPaymentType', [VehicleDetailController::class,'add_fullPaymentType'])->name('add.fullPaymentType');
+
+Route::get('/resetRecords/reset/{id}', [VehicleDetailController::class,'reset_records_based_on_paymentType'])->name('resetRecords.reset');
+
 // to get uploaded files
 Route::get('/file-view/{filename}/{directory}', [ViewUploadedFilesController::class,'view_store_files'])->name('file.view');
 // End admin routes

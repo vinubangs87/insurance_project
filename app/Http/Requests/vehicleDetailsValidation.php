@@ -49,6 +49,7 @@ class vehicleDetailsValidation extends FormRequest
             'policy_number'=> 'required',
             'policy_start_date'=> 'required|date_format:d/m/Y',
             'policy_end_date'=> 'required|date_format:d/m/Y',
+            'insurance_amount'=> 'required',
         ];
     }
 

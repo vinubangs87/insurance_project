@@ -12,8 +12,11 @@ use App\Models\enginetype;
 use App\Models\permittype;
 use App\Models\vehicledetail;
 use App\Models\financecompany;
+use App\Models\paymentsettlement;
+use App\Models\insuranceAmountHisstory;
 use DB;
 use Carbon\Carbon;
+use Auth;
 
 class VehicleDetailController extends Controller
 {
@@ -130,7 +133,22 @@ class VehicleDetailController extends Controller
         $data->renewal_premium = $request->renewal_premium;
         $data->engine_number = $request->engine_number;
         $data->chasis_number = $request->chasis_number;
+        $data->insurance_amount = $request->insurance_amount;
         $data->save();
+        $vehicledetail_id = $data->id;
+
+        // Add insuranceAmountHisstory column
+        /*$data_insuranceAmountHisstory = new insuranceAmountHisstory;
+        $data_insuranceAmountHisstory->vehicledetail_id = $vehicledetail_id;
+        $data_insuranceAmountHisstory->save();
+        $insuranceAmountHisstory_id = $data_insuranceAmountHisstory->id;*/
+
+        // Add paymentsettlement column
+        $data_paymentsettlement = new paymentsettlement;
+        $data_paymentsettlement->vehicledetail_id = $vehicledetail_id;
+        //$data_paymentsettlement->insuranceAmountHisstory_id = $insuranceAmountHisstory_id;
+        $data_paymentsettlement->save();
+
         session()->flash('message','Created successfully.');
         return redirect()->back();
 
@@ -253,6 +271,7 @@ class VehicleDetailController extends Controller
         $data->renewal_premium = $request->renewal_premium;
         $data->engine_number = $request->engine_number;
         $data->chasis_number = $request->chasis_number;
+        $data->insurance_amount = $request->insurance_amount;
         $data->save();
         session()->flash('message','Updated successfully.');
         return redirect()->back();
@@ -294,5 +313,68 @@ class VehicleDetailController extends Controller
             return response()->json(['status' => 'success', 'data' => $procuctNames], 200);
         }
         return response()->json(['status' => 'failed', 'message' => 'No record found'], 404);
+    }
+
+    /**
+     * View/Update Insurance amount history
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function insurance_amount_show($id)
+    {
+        $vehicledetail = vehicledetail::find($id);
+        $paymentsettlementsDetails = paymentsettlement::where('vehicledetail_id',$id)->first();
+        return view('admin.vehicleDetails.insuranceAmountShow',compact('vehicledetail','paymentsettlementsDetails'));
+    }
+
+    /**
+     * Update full payment type
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function add_fullPaymentType(Request $request)
+    {
+        // update paymentsettlement column
+        $current_date_time = \Carbon\Carbon::now()->format('Y-m-d');
+        $data = [
+            'is_payment_settled'=>1,
+            'payment_settled_date'=>$current_date_time,
+            'settled_by'=>Auth::user()->id,
+            'payment_type'=>$request->payment_type,
+        ];
+        $result = paymentsettlement::where('id', $request->paymentsettlementsDetails_id)->update($data);
+
+        if($result){
+            return response()->json(['status' => 'success', 'message' => 'Updated successfully.'], 200);
+        }
+        else{
+            return response()->json(['status' => 'failed', 'message' => 'Something went wrong.'], 404);
+        }
+
+    }
+
+    /**
+     * Reset paymentsettlements record based on full payment type delete or partial payment type delete
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function reset_records_based_on_paymentType($id)
+    {
+        $data = paymentsettlement::find($id);
+        $data->insuranceAmountHisstory_id = null;
+        $data->is_payment_settled = null;
+        $data->payment_settled_date = null;
+        $data->settled_by = null;
+        $data->payment_type = null; 
+        $result = $data->save();
+        if($result){
+        session()->flash('message','Deleted successfully.');
+        return redirect()->back();
+        }
+        else
+        {
+            echo 'Something went wrong';
+        }
+
     }
 }
