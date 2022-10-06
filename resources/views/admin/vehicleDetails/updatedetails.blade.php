@@ -372,13 +372,13 @@
 		                  </small>
 										</div>
 
-										<div class="col-md-6 col-sm-6  form-group has-feedback">
+										{{-- <div class="col-md-6 col-sm-6  form-group has-feedback">
 											<label for="inputSuccess2">Insurance amount <span class="required">*</span></label>
 											<input type="text" class="form-control" id="insurance_amount" name="insurance_amount" value="{{ $vehicledetail->insurance_amount }}" />
 											<small class="text-danger">
 		                    {{ $errors->first('insurance_amount',':message') }}
 		                  </small>
-										</div>
+										</div> --}}
 
 										<div class="ln_solid"></div>
 											<div class="col-md-12 col-sm-12  offset-md-3">

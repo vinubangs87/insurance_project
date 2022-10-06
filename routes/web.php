@@ -65,6 +65,17 @@ Route::post('/add/fullPaymentType', [VehicleDetailController::class,'add_fullPay
 
 Route::get('/resetRecords/reset/{id}', [VehicleDetailController::class,'reset_records_based_on_paymentType'])->name('resetRecords.reset');
 
+Route::get('/settlementPartialType/settle/{id}', [VehicleDetailController::class,'settlement_PartialType'])->name('settlementPartialType.settle');
+
+Route::post('/add/partialPaymentType', [VehicleDetailController::class,'add_partialPaymentType'])->name('add.partialPaymentType');
+
+Route::post('/update/insuranceAmount', [VehicleDetailController::class,'update_insuranceAmount'])->name('update.insuranceAmount');
+
+Route::get('/settlementPartialType/reset/{paymentsettlementsDetails_id}/{vehicledetail_id}/{insurance_amount}', [VehicleDetailController::class,'reset_records_based_on_partialpaymentType'])->name('settlementPartialType.reset');
+
+Route::post('/data/export', [VehicleDetailController::class,'data_export'])->name('data.export');
+
+
 // to get uploaded files
 Route::get('/file-view/{filename}/{directory}', [ViewUploadedFilesController::class,'view_store_files'])->name('file.view');
 // End admin routes

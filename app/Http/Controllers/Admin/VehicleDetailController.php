@@ -14,9 +14,11 @@ use App\Models\vehicledetail;
 use App\Models\financecompany;
 use App\Models\paymentsettlement;
 use App\Models\insuranceAmountHisstory;
+use App\Exports\vehicleDetailsExport;
 use DB;
 use Carbon\Carbon;
 use Auth;
+use Maatwebsite\Excel\Facades\Excel;
 
 class VehicleDetailController extends Controller
 {
@@ -67,8 +69,9 @@ class VehicleDetailController extends Controller
     {
         $request->validate([
         'rc_image' => 'required|mimes:csv,txt,xlx,xls,pdf,png,jpg,jpeg|max:500',
-        'previous_insurance_file' => 'required|mimes:csv,txt,xlx,xls,pdf,png,jpg,jpeg|max:500',
-        'new_insurance_file' => 'required|mimes:csv,txt,xlx,xls,pdf,png,jpg,jpeg|max:500'
+        'previous_insurance_file' => 'nullable|mimes:csv,txt,xlx,xls,pdf,png,jpg,jpeg|max:500',
+        'new_insurance_file' => 'nullable|mimes:csv,txt,xlx,xls,pdf,png,jpg,jpeg|max:500',
+        'insurance_amount' => 'required',
         ]);
 
         $fileName_rc_image = $fileName_previous_insurance_file = $fileName_new_insurance_file = '';
@@ -137,16 +140,10 @@ class VehicleDetailController extends Controller
         $data->save();
         $vehicledetail_id = $data->id;
 
-        // Add insuranceAmountHisstory column
-        /*$data_insuranceAmountHisstory = new insuranceAmountHisstory;
-        $data_insuranceAmountHisstory->vehicledetail_id = $vehicledetail_id;
-        $data_insuranceAmountHisstory->save();
-        $insuranceAmountHisstory_id = $data_insuranceAmountHisstory->id;*/
-
         // Add paymentsettlement column
         $data_paymentsettlement = new paymentsettlement;
         $data_paymentsettlement->vehicledetail_id = $vehicledetail_id;
-        //$data_paymentsettlement->insuranceAmountHisstory_id = $insuranceAmountHisstory_id;
+        $data_paymentsettlement->total_amount_with_intrest = $request->insurance_amount;
         $data_paymentsettlement->save();
 
         session()->flash('message','Created successfully.');
@@ -271,7 +268,7 @@ class VehicleDetailController extends Controller
         $data->renewal_premium = $request->renewal_premium;
         $data->engine_number = $request->engine_number;
         $data->chasis_number = $request->chasis_number;
-        $data->insurance_amount = $request->insurance_amount;
+        //$data->insurance_amount = $request->insurance_amount;
         $data->save();
         session()->flash('message','Updated successfully.');
         return redirect()->back();
@@ -324,7 +321,8 @@ class VehicleDetailController extends Controller
     {
         $vehicledetail = vehicledetail::find($id);
         $paymentsettlementsDetails = paymentsettlement::where('vehicledetail_id',$id)->first();
-        return view('admin.vehicleDetails.insuranceAmountShow',compact('vehicledetail','paymentsettlementsDetails'));
+        $insuranceAmountHisstoryDetails = insuranceAmountHisstory::where('vehicledetail_id',$id)->get();
+        return view('admin.vehicleDetails.insuranceAmountShow',compact('vehicledetail','paymentsettlementsDetails','insuranceAmountHisstoryDetails'));
     }
 
     /**
@@ -335,12 +333,12 @@ class VehicleDetailController extends Controller
     public function add_fullPaymentType(Request $request)
     {
         // update paymentsettlement column
-        $current_date_time = \Carbon\Carbon::now()->format('Y-m-d');
+        $full_amount_date = Carbon::createFromFormat('d/m/Y', $request->full_amount_date)->format('Y-m-d');
         $data = [
-            'is_payment_settled'=>1,
-            'payment_settled_date'=>$current_date_time,
+            'is_payment_settled'=>'1',
             'settled_by'=>Auth::user()->id,
-            'payment_type'=>$request->payment_type,
+            'payment_type'=>'1',
+            'payment_settled_date'=>$full_amount_date,
         ];
         $result = paymentsettlement::where('id', $request->paymentsettlementsDetails_id)->update($data);
 
@@ -376,5 +374,148 @@ class VehicleDetailController extends Controller
             echo 'Something went wrong';
         }
 
+    }
+
+    /**
+     * Update partial payment type
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function add_partialPaymentType(Request $request)
+    {
+        $request->validate([
+        'advance_amount' => 'required',
+        'intrest_rate' => 'required',
+        'intrest_amount' => 'required',
+        'remaining_amount_without_intrest' => 'required',
+        'remaining_amount_with_intrest' => 'required',
+        'advance_amount_date'=> 'required|date_format:d/m/Y'
+        ]); 
+
+        $advance_amount_date = Carbon::createFromFormat('d/m/Y', $request->advance_amount_date)->format('Y-m-d');
+
+        $total_amount_with_intrest = $request->total_amount_with_intrest;
+        $advance_amount = $request->advance_amount;   
+        $intrest_rate = $request->intrest_rate; 
+        $remaining_amount_without_intrest = $total_amount_with_intrest - $advance_amount;
+        $intrest_amount = $remaining_amount_without_intrest*($intrest_rate/100);
+        $total_amount_with_intrest_updated = $remaining_amount_without_intrest + $intrest_amount;
+
+        $insuranceAmountHisstory_data = new insuranceAmountHisstory;
+        $insuranceAmountHisstory_data->vehicledetail_id = $request->vehicledetail_id;
+        $insuranceAmountHisstory_data->intrest_amount = $intrest_amount;
+        $insuranceAmountHisstory_data->advance_amount = $request->advance_amount;
+        $insuranceAmountHisstory_data->intrest_rate = $request->intrest_rate;
+        $insuranceAmountHisstory_data->remaining_amount_without_intrest = $remaining_amount_without_intrest;
+        $insuranceAmountHisstory_data->remaining_amount_with_intrest = $total_amount_with_intrest_updated;
+        $insuranceAmountHisstory_data->advance_amount_date = $advance_amount_date;
+        $result = $insuranceAmountHisstory_data->save();
+        if($result)
+        {
+            $paymentsettlementsDetails_data = paymentsettlement::find($request->paymentsettlementsDetails_id);
+            $paymentsettlementsDetails_data->total_amount_with_intrest = $total_amount_with_intrest_updated;
+            $paymentsettlementsDetails_data->payment_type = '0';
+            $paymentsettlementsDetails_data->save();
+        }
+        else
+        {
+            session()->flash('message','Something went wrong.');
+            return redirect()->back();
+        }
+        session()->flash('message','Updated successfully.');
+        return redirect()->back();
+
+    }
+
+    /**
+     * Settlement partial payment
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function settlement_PartialType($id)
+    {
+        $current_date_time = \Carbon\Carbon::now()->format('Y-m-d');
+        $data = paymentsettlement::find($id);
+        $data->is_payment_settled = '1';
+        $data->payment_settled_date = $current_date_time;
+        $data->settled_by = Auth::user()->id;
+        $result = $data->save();
+        if($result){
+        session()->flash('message','Updated successfully.');
+        return redirect()->back();
+        }
+        else
+        {
+            echo 'Something went wrong';
+        }
+    }
+
+    /**
+     * Reset paymentsettlements record based on full payment type delete or partial payment type delete
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function reset_records_based_on_partialpaymentType($paymentsettlementsDetails_id,$vehicledetail_id,$insurance_amount)
+    {
+        $data = paymentsettlement::find($paymentsettlementsDetails_id);
+        $data->insuranceAmountHisstory_id = null;
+        $data->is_payment_settled = null;
+        $data->payment_settled_date = null;
+        $data->settled_by = null;
+        $data->payment_type = null; 
+        $data->total_amount_with_intrest = $insurance_amount; 
+        $result = $data->save();
+        if($result){
+
+        insuranceAmountHisstory::where('vehicledetail_id', $vehicledetail_id)->delete();
+        session()->flash('message','Deleted successfully.');
+        return redirect()->back();
+        }
+        else
+        {
+            echo 'Something went wrong';
+        }
+
+    }
+
+    /**
+     * Update insurance amount
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function update_insuranceAmount(Request $request)
+    {
+        if(empty($request->vehicle_insurance_amount)){
+             return response()->json(['status' => 'failed', 'message' => 'Insurance field is required.']);
+        }
+        else{
+            $data = [
+                'insurance_amount'=>$request->vehicle_insurance_amount
+            ];
+            $result = vehicledetail::where('id', $request->vehicledetail_id_update)->update($data);
+
+            if($result){
+
+            $data = [
+                'total_amount_with_intrest'=>$request->vehicle_insurance_amount
+            ];
+            $result = paymentsettlement::where('vehicledetail_id', $request->vehicledetail_id_update)->update($data);
+            return response()->json(['status' => 'success', 'message' => 'Updated successfully.']);
+            }
+            else{
+                return response()->json(['status' => 'failed', 'message' => 'Something went wrong.']);
+            }
+        }
+
+    }
+
+    /**
+     * Export vehicle list
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function data_export(Request $request)
+    {
+         return Excel::download(new vehicleDetailsExport($request->daterange), 'vehiclelist.xlsx');
     }
 }

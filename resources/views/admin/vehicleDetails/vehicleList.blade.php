@@ -21,23 +21,28 @@
 			        @endif
                 <div class="x_panel">
                   <div class="x_title">
-                    <h2>View records: </h2>
+                    <h2>Download records: </h2>
                     <div class="clearfix"></div>
-                  {{--  <form class="form-label-left" action="" method="post">
-                   	<div class="col-md-3 col-sm-3  form-group">
-                    <select id="insuranceCompany_id" class="form-control" name="insuranceCompany_id">
+                  <form class="form-label-left" action="{{ route('data.export') }}" method="post">
+                    @csrf
+                   	{{-- <div class="col-md-3 col-sm-3  form-group">
+                    <select id="vehicle_export" class="form-control" name="vehicle_export">
 												<option value="">Choose..</option>
-												<option value="1">Active</option>
+												<option value="all">All</option>
+                        <option value="1">Active</option>
 												<option value="0">Inactive</option>
 										</select>
-                  	</div>
+                      <small class="text-danger">
+                        {{ $errors->first('vehicle_export',':message') }}
+                      </small>
+                  	</div> --}}
                    	<div class="col-md-3 col-sm-3  form-group">
-                    <input type="text" name="daterange" class="form-control" value="01/01/2018 - 01/15/2018" />
+                    <input type="text" name="daterange" class="form-control" value="{{ old('daterange') }}" />
                   	</div>
                   	<div class="col-md-3 col-sm-3  form-group">
-												<button type="submit" class="btn btn-success">Search</button>
+												<button type="submit" class="btn btn-success">Download</button>
 											</div>
-                  </form> --}}
+                  </form>
                   </div>
                   <div class="x_content">
                       <div class="row">
@@ -74,7 +79,7 @@
                           	@if((\Carbon\Carbon::now()->format('Y-m-d') > $vehiclelist->expiry_date) || (\Carbon\Carbon::now()->format('Y-m-d') > $vehiclelist->insurance_expiry_date) || (\Carbon\Carbon::now()->format('Y-m-d') > $vehiclelist->fitness_expiry_date) || (\Carbon\Carbon::now()->format('Y-m-d') > $vehiclelist->mv_tax_expiry_date) || (\Carbon\Carbon::now()->format('Y-m-d') > $vehiclelist->pucc_expiry_date) || (\Carbon\Carbon::now()->format('Y-m-d') > $vehiclelist->permit_valid_upto_date) || (\Carbon\Carbon::now()->format('Y-m-d') > $vehiclelist->policy_end_date))
                           	<td class="red inactive-class"><div class="status-inactive"><b>INACTIVE</b></div></td>
                           	@else
-	                          <td class="green"><div class="status-active" title="Active">Active</div></td>
+	                          <td class="green"><div class="status-active" title="Active"><b>ACTIVE</b></div></td>
 	                          @endif
                           
                           <td><form method="POST" action="{{ route('vehicledetails.destroy', $vehiclelist->id) }}">
@@ -115,9 +120,12 @@
 <script>
 $(function() {
   $('input[name="daterange"]').daterangepicker({
+    locale: {
+      format: 'DD-MM-YYYY'
+    },
     opens: 'left'
   }, function(start, end, label) {
-    console.log("A new date selection was made: " + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD'));
+    console.log("A new date selection was made: " + start.format('DD-MM-YYYY') + ' to ' + end.format('DD-MM-YYYY'));
   });
 });
 </script>
