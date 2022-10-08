@@ -61,17 +61,24 @@
               </nav>
           </div>
 
-
         <div class="nav-search col-lg-4">
-            <div class="row">
-              <div class="col-lg-9">
-              <input type="text" class="form-control" id="vehicle_number" placeholder="Type Vehicle number..." autocomplete="off" />
-              </div>
-              <div class="col-lg-2">
-              <button class="btn btn-primary" id="search-button">Search</button>
-            </div>
-            </div>
-        </div><!-- Search end -->
+          <ul class="list-unstyled">
+              <li style="margin: 8px 0 0 0">
+                <a title="Facebook" href="#" style="padding: 0 20px 0 20px;">
+                    <span class="social-icon"><i class="fab fa-facebook-f"></i></span>
+                </a>
+                <a title="Twitter" href="#" style="padding: 0 20px 0 20px;">
+                    <span class="social-icon"><i class="fab fa-twitter"></i></span>
+                </a>
+                <a title="Instagram" href="#" style="padding: 0 20px 0 20px;">
+                    <span class="social-icon"><i class="fab fa-instagram"></i></span>
+                </a>
+                <a title="Linkdin" href="#" style="padding: 0 20px 0 20px;">
+                    <span class="social-icon"><i class="fab fa-github"></i></span>
+                </a>
+              </li>
+          </ul>
+        </div>
           <!--/ Col end -->
         </div>
         <!--/ Row end -->

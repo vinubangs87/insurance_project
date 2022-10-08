@@ -70,7 +70,7 @@
               <!--/ Top info end -->
   
               <div class="col-lg-4 col-md-4 top-social text-center text-md-right">
-                <ul class="list-unstyled">
+                {{-- <ul class="list-unstyled">
                     <li>
                       <a title="Facebook" href="https://facebbok.com/themefisher.com">
                           <span class="social-icon"><i class="fab fa-facebook-f"></i></span>
@@ -85,7 +85,16 @@
                           <span class="social-icon"><i class="fab fa-github"></i></span>
                       </a>
                     </li>
-                </ul>
+                </ul> --}}
+
+                    <div class="row">
+                      <div class="col-lg-9">
+                      <input type="text" class="form-control" id="vehicle_number" placeholder="Type Vehicle number..." autocomplete="off" />
+                      </div>
+                      <div class="col-lg-2">
+                      <button class="btn btn-danger" id="search-button">Search</button>
+                    </div>
+                </div><!-- Search end -->
               </div>
               <!--/ Top social end -->
           </div>

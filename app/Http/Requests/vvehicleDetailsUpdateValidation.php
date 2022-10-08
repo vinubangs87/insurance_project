@@ -33,7 +33,7 @@ class vvehicleDetailsUpdateValidation extends FormRequest
             'customer_mobile'=> 'required|numeric|digits:10',
             'customer_email'=> 'nullable|email:rfc,dns',
             'customer_address'=> 'required',
-            'vehicle_number'=> 'required',
+            //'vehicle_number'=> 'required',
             //'registration_number'=> 'required',
             'registration_date'=> 'required|date_format:d/m/Y',
             'expiry_date'=> 'required|date_format:d/m/Y',

@@ -589,7 +589,8 @@ a[href^=tel] {
 /* Top info */
 ul.top-info {
   list-style: none;
-  margin: 0;
+  /*margin: 0;*/
+  margin: 6px;
   padding: 0;
 }
 

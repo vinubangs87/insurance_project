@@ -29,6 +29,7 @@ class forntendGeneralController extends Controller
                         ->leftjoin('financecompanies AS fc','vd.financecompany_id','=','fc.id')
                         ->select('vd.*','ic.title AS ic_title','pt.title AS pt_title','pn.title AS pn_title','et.title AS et_title','pert.title AS pert_title','fc.title AS fc_title')
                         ->where('vd.vehicle_number','=',$request->vehicle_number)
+                        ->where('vd.deleted_at',NULL)
                         ->first();
 
         if ($vehicledetail) {

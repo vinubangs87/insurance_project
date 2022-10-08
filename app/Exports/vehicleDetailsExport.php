@@ -19,7 +19,7 @@ class vehicleDetailsExport implements FromCollection, WithHeadings, WithMapping
 
     public function headings(): array
     {
-        return ["Insurance company", "Product type", "Product name", "Engine type", "Permit type", "Customer name", "Customer mobile", "Customer email", "Customer address", "Vehicle number", "Registration number", "Registration date", "Registration expiry date", "Insurance start date", "Insurance expiry date", "Insurance amount", "Fitness expiry date", "MV tax expiry date", "PUCC expiry date", "Finance type", "Finance company", "Permit number", "Permit valid upto date", "Policy number", "Policy start date", "Policy end date", "Renewal premium", "Engine number", "Chasis number"];
+        return ["Insurance company", "Product type", "Product name", "Fuel type", "Permit type", "Customer name", "Customer mobile", "Customer email", "Customer address", "Vehicle number", "Registration number", "Registration date", "Registration expiry date", "Insurance start date", "Insurance expiry date", "Insurance amount", "Fitness expiry date", "MV tax expiry date", "PUCC expiry date", "Finance type", "Finance company", "Permit number", "Permit valid upto date", "Policy number", "Policy start date", "Policy end date", "Renewal premium", "Engine number", "Chasis number"];
     }   
  
     public function collection()

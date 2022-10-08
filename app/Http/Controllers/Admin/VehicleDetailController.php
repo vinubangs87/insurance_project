@@ -247,7 +247,7 @@ class VehicleDetailController extends Controller
         $data->customer_mobile = $request->customer_mobile;
         $data->customer_email = $request->customer_email;
         $data->customer_address = $request->customer_address;
-        $data->vehicle_number = $request->vehicle_number;
+        //$data->vehicle_number = $request->vehicle_number;
         //$data->registration_number = $request->registration_number;
         $data->registration_date = $registration_date;
         $data->expiry_date = $expiry_date;
