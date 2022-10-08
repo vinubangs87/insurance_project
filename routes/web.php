@@ -10,6 +10,8 @@ use App\Http\Controllers\Admin\ProductTypeController;
 use App\Http\Controllers\Admin\FinanceCompanyController;
 use App\Http\Controllers\Admin\VehicleDetailController;
 use App\Http\Controllers\ViewUploadedFilesController;
+use App\Http\Controllers\contactUsController;
+use App\Http\Controllers\forntendGeneralController;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,7 +26,7 @@ use App\Http\Controllers\ViewUploadedFilesController;
 
 Route::get('/', function () {
     return view('welcome');
-});
+})->name('front.home');
 
 Auth::routes();
 
@@ -79,3 +81,29 @@ Route::post('/data/export', [VehicleDetailController::class,'data_export'])->nam
 // to get uploaded files
 Route::get('/file-view/{filename}/{directory}', [ViewUploadedFilesController::class,'view_store_files'])->name('file.view');
 // End admin routes
+
+// Frontend routes
+
+Route::get('about/us' , function(){
+    return view('about');
+})->name('about.us');
+
+Route::get('our/services' , function(){
+    return view('services');
+})->name('our.services');
+
+Route::get('our/partner' , function(){
+    return view('partners');
+})->name('our.partner');
+
+Route::get('contact/us', [contactUsController::class,'index'])->name('contact.us');
+Route::post('send/contact/mail', [contactUsController::class,'send_email'])->name('send.contact.mail');
+
+
+Route::post('show/vehicle/details', [forntendGeneralController::class,'vehicle_details'])->name('show.vehicle.details');
+
+/*Route::get('contact/us' , function(){
+    return view('contacts');
+})->name('contact.us');*/
+
+// End frontend routes

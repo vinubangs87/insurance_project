@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Requests\vehicleDetailsValidation;
+use App\Http\Requests\vvehicleDetailsUpdateValidation;
 use App\Models\insuranceCompany;
 use App\Models\producttype;
 use App\Models\procuctname;
@@ -65,13 +66,12 @@ class VehicleDetailController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(vehicleDetailsValidation $request)
-    //public function store(Request $request)
     {
         $request->validate([
         'rc_image' => 'required|mimes:csv,txt,xlx,xls,pdf,png,jpg,jpeg|max:500',
         'previous_insurance_file' => 'nullable|mimes:csv,txt,xlx,xls,pdf,png,jpg,jpeg|max:500',
         'new_insurance_file' => 'nullable|mimes:csv,txt,xlx,xls,pdf,png,jpg,jpeg|max:500',
-        'insurance_amount' => 'required',
+        'insurance_amount' => 'required'
         ]);
 
         $fileName_rc_image = $fileName_previous_insurance_file = $fileName_new_insurance_file = '';
@@ -198,7 +198,7 @@ class VehicleDetailController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(vehicleDetailsValidation $request, $id)
+    public function update(vvehicleDetailsUpdateValidation $request, $id)
     {
         $request->validate([
         'rc_image' => 'nullable|mimes:jpg,jpeg,png,bmp,gif,svg,webp,pdf,docx|max:500',

@@ -33,7 +33,7 @@ class vehicleDetailsValidation extends FormRequest
             'customer_mobile'=> 'required|numeric|digits:10',
             'customer_email'=> 'nullable|email:rfc,dns',
             'customer_address'=> 'required',
-            'vehicle_number'=> 'required',
+            'vehicle_number'=> 'required|unique:vehicledetails',
             //'registration_number'=> 'required',
             'registration_date'=> 'required|date_format:d/m/Y',
             'expiry_date'=> 'required|date_format:d/m/Y',
@@ -66,6 +66,7 @@ class vehicleDetailsValidation extends FormRequest
             'date' => 'Please enter valid date format',
             'numeric' => 'Please enter valid phone format',
             'digits' => 'Phone number length should be 10',
+            'unique' => 'This vehicle number is already registered.',
         ];
     }
 }

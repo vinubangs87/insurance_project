@@ -6,7 +6,8 @@
     <meta charset="utf-8">
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    {{-- <title>{{ config('app.name', 'Laravel') }}</title> --}}
+    <title>Durga Insurance Solution</title>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" href="images/favicon.ico" type="image/ico" />
@@ -43,17 +44,20 @@
            opacity: 0;
          }
        }
+       .nav.side-menu>li.current-page, .nav.side-menu>li.active{
+        border-right: 5px solid #a40000 !important;
+       }
      </style>
     @stack('pagespecificCss')
   </head>
 
   <body class="nav-md">
-    <div class="container body">
+    <div class="container body" style="background-color: #e9bb15 !important;">
       <div class="main_container">
         <div class="col-md-3 left_col">
-          <div class="left_col scroll-view">
-            <div class="navbar nav_title" style="border: 0;">
-              <a href="{{ route('home') }}" class="site_title"><i class="fa fa-paw"></i> <span>Admin login.</span></a>
+          <div class="left_col scroll-view" style="background-color: #e9bb15 !important;">
+            <div class="navbar nav_title" style="border: 0;background-color: #e9bb15 !important;">
+              <a href="{{ route('home') }}"><img src="{{ asset('frontend/images/logo.jpg') }}" alt="Logo" style="width: 100px; height: 70px;" /></a>
             </div>
 
             <div class="clearfix"></div>
