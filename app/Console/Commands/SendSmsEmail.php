@@ -48,7 +48,7 @@ class SendSmsEmail extends Command
             {
                 $customer_mobile = '';
                 $customer_name = '';
-                $registration_date_diff = (Carbon::now()->format('Y-m-d') < $vehicledetail->registration_date) ? now()->diffInDays(Carbon::parse($vehicledetail->registration_date)) : '';
+                $registration_date_diff = (Carbon::now()->format('Y-m-d') < $vehicledetail->expiry_date) ? now()->diffInDays(Carbon::parse($vehicledetail->expiry_date)) : '';
                 $insurance_expiry_date_diff = (Carbon::now()->format('Y-m-d') < $vehicledetail->insurance_expiry_date) ? now()->diffInDays(Carbon::parse($vehicledetail->insurance_expiry_date)) : '';
                 $fitness_expiry_date_diff = (Carbon::now()->format('Y-m-d') < $vehicledetail->fitness_expiry_date) ? now()->diffInDays(Carbon::parse($vehicledetail->fitness_expiry_date)) : '';
                 $mv_tax_expiry_date_diff = (Carbon::now()->format('Y-m-d') < $vehicledetail->mv_tax_expiry_date) ? now()->diffInDays(Carbon::parse($vehicledetail->mv_tax_expiry_date)) : '';

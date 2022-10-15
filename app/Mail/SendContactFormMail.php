@@ -29,6 +29,6 @@ class SendContactFormMail extends Mailable
      */
     public function build()
     {
-        return $this->from('vinubangs@gmail.com')->subject('New Customer Equiry')->view('contact_form_mail_content')->with('data', $this->data);
+        return $this->from('noreply@durgainsurance.cstechnologyindia.com')->subject('New Customer Equiry')->view('contact_form_mail_content')->with('data', $this->data);
     }
 }

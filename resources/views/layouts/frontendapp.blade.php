@@ -53,11 +53,32 @@
        .blue{
        	color: blue;
        }
+
+       .whole-page-overlay{
+         left: 0;
+         right: 0;
+         top: 0;
+         bottom: 0;
+         position: fixed;
+         background: rgba(0,0,0,0.6);
+         width: 100%;
+         height: 100% !important;
+         z-index: 1050;
+         display: none;
+       }
+       .whole-page-overlay .center-loader{
+         top: 50%;
+         left: 52%;
+         position: absolute;
+         color: white;
+       }
      </style>
 </head>
 <body>
+    <div class="whole-page-overlay" id="whole_page_loader">
+<img class="center-loader"  style="height:100px;" src="{{ asset('frontend/images/loader.gif') }}"/>
+</div>
   <div class="body-inner">
-
     <div id="top-bar" class="top-bar">
         <div class="container">
           <div class="row">
@@ -143,11 +164,16 @@ $(document).on('click', '#search-button', function(event) {
 	    vehicle_number: vehicle_number,
 	    _token: '{{csrf_token()}}'
 	},
+    beforeSend: function() {
+        $('.whole-page-overlay').show();
+    },
 	success:function(data) {
 		$('#vehicle_data').html(data);
 		$('#vehicle_modal').modal('show');
+    $('.whole-page-overlay').hide();
 	},
 	  error:function (response) {
+    $('.whole-page-overlay').hide();
 	      alert(response.responseJSON.errors.vehicle_number[0]);
 	    }
 	});

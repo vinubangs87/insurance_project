@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\VechileStatusController;
 use App\Http\Controllers\Admin\ProductTypeController;
 use App\Http\Controllers\Admin\FinanceCompanyController;
 use App\Http\Controllers\Admin\VehicleDetailController;
+use App\Http\Controllers\Admin\brokerTypeController;
 use App\Http\Controllers\ViewUploadedFilesController;
 use App\Http\Controllers\contactUsController;
 use App\Http\Controllers\forntendGeneralController;
@@ -37,6 +38,9 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 Route::resource('/insurancecompany', insuranceCompanyController::class);
 Route::get('/insurancedelete/{id}', [insuranceCompanyController::class,'destroy'])->name('insurancecompany.delete');
 
+Route::resource('/broker', brokerTypeController::class);
+Route::get('/broker/{id}', [brokerTypeController::class,'destroy'])->name('broker.delete');
+
 Route::resource('/enginetype', EngineTypeController::class);
 Route::get('/enginetypedelete/{id}', [EngineTypeController::class,'destroy'])->name('enginetype.delete');
 
@@ -60,6 +64,8 @@ Route::resource('/vehicledetails', VehicleDetailController::class);
 Route::get('/vehicle/details', [VehicleDetailController::class,'vehiclerecords'])->name('vehicledetails.vehiclerecords');
 
 Route::post('/get/dependent/projectName', [VehicleDetailController::class,'get_dependent_project_name'])->name('dependent.projectName');
+
+Route::post('/get/dependent/brokerName', [VehicleDetailController::class,'get_dependent_broker_name'])->name('dependent.brokerName');
 
 Route::get('/insurance/amount/update/{id}', [VehicleDetailController::class,'insurance_amount_show'])->name('insurance.amount.show');
 

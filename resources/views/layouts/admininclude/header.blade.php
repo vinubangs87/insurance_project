@@ -4,7 +4,11 @@
                 <a id="menu_toggle"><i class="fa fa-bars"></i></a>
               </div>
               <nav class="nav navbar-nav">
-              
+          
+                
+              <div class="row">
+                <div class="col-md-6 col-sm-6 navbar-left" style="padding: 15px 0 0 0"><b style="color:white;font-size: 22px;">Durga Insurance Solutions</b></div>
+                <div class="col-md-6 col-sm-6">
               <ul class=" navbar-right">
                 <li class="nav-item dropdown open" style="padding-left: 15px;">
                   <a href="javascript:;" class="user-profile dropdown-toggle" aria-haspopup="true" id="navbarDropdown" data-toggle="dropdown" aria-expanded="false">
@@ -17,7 +21,8 @@
                     </form>
                   </div>
                 </li>
-              </ul>
+              </ul></div>
+              </div>
             </nav>
           </div>
         </div>

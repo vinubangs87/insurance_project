@@ -31,7 +31,8 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
          $schedule->command('sendsmsemail:cron')->everyMinute();
-         $schedule->command('sendsmsemaildaily:cron')->everyMinute();
+         $schedule->command('sendsmsemaildaily:cron')->dailyAt('13:15')->timezone('Asia/Kolkata'); // send only email on daily basis
+         $schedule->command('SendSmsBetween30To60Days:cron')->everyMinute()->timezone('Asia/Kolkata');
     }
 
     /**

@@ -11,6 +11,19 @@ else if($type == 'insuranceUpdate')
 	define("routeName", "insurancecompany.update");
 	define("routeCancel", "insurancecompany.index");
 }
+
+else if($type == 'brokernameSave')
+{
+	define("routeName", "broker.store");
+	define("routeNameEdit", "broker.edit");
+	define("routeDelete", "broker.delete");
+}
+else if($type == 'brokernameUpdate')
+{
+	define("routeName", "broker.update");
+	define("routeCancel", "broker.index");
+}
+
 else if($type == 'enginetypeSave')
 {
 	define("routeName", "enginetype.store");

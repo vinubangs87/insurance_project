@@ -59,6 +59,24 @@
 							</div>
 							@endif
 
+							{{-- @if(isset($insuranceCompany))
+							<div class="item form-group">
+								<label class="col-form-label col-md-3 col-sm-3 label-align" for="last-name">Insurance company<span class="required">*</span>
+								</label>
+								<div class="col-md-6 col-sm-6 ">
+									<select id="insurance_companies_id" class="form-control" name="insurance_companies_id">
+										<option value="">Choose..</option>
+										@foreach($insuranceCompany as $insuranceCompany)
+											<option value="{{ $insuranceCompany->id }}">{{ $insuranceCompany->title }}</option>
+										@endforeach
+									</select>
+									<small class="text-danger">
+                    {{ $errors->first('insurance_companies_id',':message') }}
+                  </small>
+								</div>
+							</div>
+							@endif --}}
+
 							<div class="item form-group">
 								<label class="col-form-label col-md-3 col-sm-3 label-align" for="title">{{ $inputName }} <span class="required">*</span>
 								</label>
@@ -128,6 +146,24 @@
 							</div>
 							@endif
 
+							{{-- @if(isset($insuranceCompany))
+							<div class="item form-group">
+								<label class="col-form-label col-md-3 col-sm-3 label-align" for="last-name">Product type <span class="required">*</span>
+								</label>
+								<div class="col-md-6 col-sm-6 ">
+									<select id="insurance_companies_id" class="form-control" name="insurance_companies_id">
+										<option value="">Choose..</option>
+										@foreach($insuranceCompany as $insuranceCompany)
+											<option value="{{ $insuranceCompany->id }}" {{ $insuranceCompany->id == $dataforedit->insurance_companies_id ? 'selected' : '' }}>{{ $insuranceCompany->title }}</option>
+										@endforeach
+									</select>
+									<small class="text-danger">
+                    {{ $errors->first('insurance_companies_id',':message') }}
+                  </small>
+								</div>
+							</div>
+							@endif --}}
+
 							<div class="item form-group">
 								<label class="col-form-label col-md-3 col-sm-3 label-align" for="title">{{ $inputName }} <span class="required">*</span>
 								</label>
@@ -155,7 +191,7 @@
 							<div class="ln_solid"></div>
 							<div class="item form-group">
 								<div class="col-md-6 col-sm-6 offset-md-3">
-									<button type="submit" class="btn btn-success">Submit</button>
+									<button type="submit" class="btn btn-success">Update</button>
 									<a href="{{ route(routeCancel) }}" class="btn btn-success">Cancel</a>
 								</div>
 							</div>
@@ -185,6 +221,7 @@
                         <tr>
                           <th>{{ $inputName }}</th>
   @if(isset($producttype))<th>Product type</th>@endif {{-- Comming from ProductNameController --}}
+   {{--  @if(isset($insuranceCompany))<th>Insurance company</th>@endif --}} {{-- Comming from brokerTypeController --}}
                           <th>Status</th>
                           <th>Action</th>
                         </tr>
@@ -196,6 +233,7 @@
                         <tr>
                           <td>{{ $dataforshow->title }}</td>
   @if(isset($producttype))<td>{{ $dataforshow->prducttype_name }}</td>@endif {{-- Comming from ProductNameController --}}
+  {{-- @if(isset($insuranceCompany))<td>{{ $dataforshow->insuranceCompany_name }}</td>@endif --}} {{-- Comming from brokerTypeController --}}
                           <td>{{ ($dataforshow->status == 1) ? 'Active' : 'Inactive' }}</td>
                           <td>{{-- <a href="{{ route(routeDelete, $dataforshow->id) }}" onclick="return confirm('Want to sure delete?')">Delete</a> ||  --}}<a href="{{ route(routeNameEdit, $dataforshow->id) }}">Edit</a></td>
                         </tr>

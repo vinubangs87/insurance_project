@@ -23,9 +23,9 @@
 									<h2>Please fill the form <small style="color:red;">(* Means mandatory field)</small></h2>									
 									<div class="clearfix"></div>
 								</div>
-									<form class="form-label-left" action="{{ route('vehicledetails.store') }}" enctype='multipart/form-data' method="post">
+									<form class="form-label-left" action="{{ route('vehicledetails.store') }}" enctype='multipart/form-data' method="post" autocomplete="off">
 										@csrf
-										<div class="col-md-6 col-sm-6  form-group has-feedback">
+										<div class="col-md-3 col-sm-3  form-group has-feedback">
 											<label for="inputSuccess2">Insurance company <span class="required">*</span></label>
 											<select id="insuranceCompany_id" class="form-control" name="insuranceCompany_id">
 												<option value="">Choose..</option>
@@ -35,6 +35,19 @@
 											</select>
 											<small class="text-danger">
 		                    {{ $errors->first('insuranceCompany_id',':message') }}
+		                  </small>
+										</div>
+
+										<div class="col-md-3 col-sm-3  form-group has-feedback">
+											<label for="inputSuccess2">Broker / IRDA <span class="required">*</span></label>
+											<select id="broker_id" class="form-control" name="broker_id">
+												<option value="">Choose..</option>
+												 @foreach($broker as $broker)
+												<option value="{{ $broker->id }}" {{ old('broker_id') == $broker->id ? 'selected' : '' }}>{{ $broker->title }}</option>
+												@endforeach
+											</select>
+											<small class="text-danger">
+		                    {{ $errors->first('broker_id',':message') }}
 		                  </small>
 										</div>
 
@@ -65,7 +78,7 @@
 										</div>
 
 										<div class="col-md-6 col-sm-6  form-group has-feedback">
-											<label for="inputSuccess2">Engine type <span class="required">*</span></label>
+											<label for="inputSuccess2">Fuel type <span class="required">*</span></label>
 											<select id="enginetype_id" class="form-control" name="enginetype_id">
 												<option value="">Choose..</option>
 												@foreach($enginetype as $enginetype)
@@ -268,7 +281,7 @@
 		                  </small>
 										</div>
 
-										<div class="col-md-6 col-sm-6  form-group has-feedback">
+										{{-- <div class="col-md-6 col-sm-6  form-group has-feedback">
 											<label for="inputSuccess2">Policy start date <span class="required">*</span></label>
 											<input type="text" class="form-control datetype" id="policy_start_date" name="policy_start_date" value="{{ old('policy_start_date') }}" />
 											<small class="text-danger">
@@ -282,7 +295,7 @@
 											<small class="text-danger">
 		                    {{ $errors->first('policy_end_date',':message') }}
 		                  </small>
-										</div>
+										</div> --}}
 
 										<div class="col-md-6 col-sm-6  form-group has-feedback">
 											<label for="inputSuccess2">Renewal premium</label>
@@ -361,4 +374,5 @@ var f_val = $( "#finance_type option:selected" ).val();
 });
 </script>
 @include('admin.vehicleDetails.vehicledetailsJs') {{-- Show product name dependent field based on product type --}}
+{{-- @include('admin.vehicleDetails.brokerdetailsJs') --}} {{-- Show broker name dependent field based on insurance company --}}
 @endpush

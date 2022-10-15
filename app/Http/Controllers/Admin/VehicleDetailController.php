@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\vehicleDetailsValidation;
 use App\Http\Requests\vvehicleDetailsUpdateValidation;
 use App\Models\insuranceCompany;
+use App\Models\broker;
 use App\Models\producttype;
 use App\Models\procuctname;
 use App\Models\enginetype;
@@ -41,12 +42,13 @@ class VehicleDetailController extends Controller
     public function index()
     {
         $insurancecompany = insuranceCompany::Where('status',1)->orderBy('title', 'ASC')->get();
+        $broker = broker::Where('status',1)->orderBy('title', 'ASC')->get();
         $producttype = producttype::Where('status',1)->orderBy('title', 'ASC')->get();
         $procuctname = procuctname::Where('status',1)->orderBy('title', 'ASC')->get();
         $enginetype = enginetype::Where('status',1)->orderBy('title', 'ASC')->get();
         $permittype = permittype::Where('status',1)->orderBy('title', 'ASC')->get();
         $financecompany = financecompany::Where('status',1)->orderBy('title', 'ASC')->get();
-        return view('admin.vehicleDetails.savedetails',compact('insurancecompany','producttype','procuctname','enginetype','permittype','financecompany'));
+        return view('admin.vehicleDetails.savedetails',compact('insurancecompany','broker','producttype','procuctname','enginetype','permittype','financecompany'));
     }
 
     /**
@@ -101,11 +103,12 @@ class VehicleDetailController extends Controller
         $mv_tax_expiry_date = Carbon::createFromFormat('d/m/Y', $request->mv_tax_expiry_date)->format('Y-m-d');
         $pucc_expiry_date = Carbon::createFromFormat('d/m/Y', $request->pucc_expiry_date)->format('Y-m-d');
         $permit_valid_upto_date = Carbon::createFromFormat('d/m/Y', $request->permit_valid_upto_date)->format('Y-m-d');
-        $policy_start_date = Carbon::createFromFormat('d/m/Y', $request->policy_start_date)->format('Y-m-d');
-        $policy_end_date = Carbon::createFromFormat('d/m/Y', $request->policy_end_date)->format('Y-m-d');
+        //$policy_start_date = Carbon::createFromFormat('d/m/Y', $request->policy_start_date)->format('Y-m-d');
+        //$policy_end_date = Carbon::createFromFormat('d/m/Y', $request->policy_end_date)->format('Y-m-d');
         
         $data = new vehicledetail;
         $data->insuranceCompany_id = $request->insuranceCompany_id;
+        $data->broker_id = $request->broker_id;
         $data->producttype_id = $request->producttype_id;
         $data->procuctname_id = $request->procuctname_id;
         $data->enginetype_id = $request->enginetype_id;
@@ -131,8 +134,8 @@ class VehicleDetailController extends Controller
         $data->permit_number = $request->permit_number;
         $data->permit_valid_upto_date = $permit_valid_upto_date;
         $data->policy_number = $request->policy_number;
-        $data->policy_start_date = $policy_start_date;
-        $data->policy_end_date = $policy_end_date;
+        //$data->policy_start_date = $policy_start_date;
+        //$data->policy_end_date = $policy_end_date;
         $data->renewal_premium = $request->renewal_premium;
         $data->engine_number = $request->engine_number;
         $data->chasis_number = $request->chasis_number;
@@ -161,12 +164,13 @@ class VehicleDetailController extends Controller
     {
         $vehicledetail = DB::table('vehicledetails AS vd')
                         ->leftjoin('insurance_companies AS ic','vd.insuranceCompany_id','=','ic.id')
+                        ->leftjoin('brokers AS br','vd.broker_id','=','br.id')
                         ->leftjoin('producttypes AS pt','vd.producttype_id','=','pt.id')
                         ->leftjoin('procuctnames AS pn','vd.procuctname_id','=','pn.id')
                         ->leftjoin('enginetypes AS et','vd.enginetype_id','=','et.id')
                         ->leftjoin('permittypes AS pert','vd.permittype_id','=','pert.id')
                         ->leftjoin('financecompanies AS fc','vd.financecompany_id','=','fc.id')
-                        ->select('vd.*','ic.title AS ic_title','pt.title AS pt_title','pn.title AS pn_title','et.title AS et_title','pert.title AS pert_title','fc.title AS fc_title')
+                        ->select('vd.*','ic.title AS ic_title','br.title AS br_title','pt.title AS pt_title','pn.title AS pn_title','et.title AS et_title','pert.title AS pert_title','fc.title AS fc_title')
                         ->where('vd.id','=',$id)
                         ->first();
         return view('admin.vehicleDetails.vehicledetails',compact('vehicledetail'));
@@ -181,6 +185,8 @@ class VehicleDetailController extends Controller
     public function edit($id)
     {
         $vehicledetail = vehicledetail::find($id);
+        //$brokername = broker::Where('status',1)->where('insurance_companies_id',$vehicledetail->insuranceCompany_id)->orderBy('title', 'ASC')->get();
+        $broker = broker::Where('status',1)->orderBy('title', 'ASC')->get();
         $insurancecompany = insuranceCompany::Where('status',1)->orderBy('title', 'ASC')->get();
         $producttype = producttype::Where('status',1)->orderBy('title', 'ASC')->get();
         $procuctname = procuctname::Where('status',1)->where('producttypes_id',$vehicledetail->producttype_id)->orderBy('title', 'ASC')->get();
@@ -188,7 +194,8 @@ class VehicleDetailController extends Controller
         $permittype = permittype::Where('status',1)->orderBy('title', 'ASC')->get();
         $financecompany = financecompany::Where('status',1)->orderBy('title', 'ASC')->get();
 
-        return view('admin.vehicleDetails.updatedetails',compact('insurancecompany','producttype','procuctname','enginetype','permittype','financecompany','vehicledetail'));
+        //return view('admin.vehicleDetails.updatedetails',compact('insurancecompany','brokername','producttype','procuctname','enginetype','permittype','financecompany','vehicledetail'));
+        return view('admin.vehicleDetails.updatedetails',compact('insurancecompany','broker','producttype','procuctname','enginetype','permittype','financecompany','vehicledetail'));
     }
 
     /**
@@ -233,11 +240,12 @@ class VehicleDetailController extends Controller
         $mv_tax_expiry_date = Carbon::createFromFormat('d/m/Y', $request->mv_tax_expiry_date)->format('Y-m-d');
         $pucc_expiry_date = Carbon::createFromFormat('d/m/Y', $request->pucc_expiry_date)->format('Y-m-d');
         $permit_valid_upto_date = Carbon::createFromFormat('d/m/Y', $request->permit_valid_upto_date)->format('Y-m-d');
-        $policy_start_date = Carbon::createFromFormat('d/m/Y', $request->policy_start_date)->format('Y-m-d');
-        $policy_end_date = Carbon::createFromFormat('d/m/Y', $request->policy_end_date)->format('Y-m-d');
+        //$policy_start_date = Carbon::createFromFormat('d/m/Y', $request->policy_start_date)->format('Y-m-d');
+        //$policy_end_date = Carbon::createFromFormat('d/m/Y', $request->policy_end_date)->format('Y-m-d');
 
         $data = vehicledetail::find($id);
         $data->insuranceCompany_id = $request->insuranceCompany_id;
+        $data->broker_id = $request->broker_id;
         $data->producttype_id = $request->producttype_id;
         $data->procuctname_id = $request->procuctname_id;
         $data->enginetype_id = $request->enginetype_id;
@@ -263,8 +271,8 @@ class VehicleDetailController extends Controller
         $data->permit_number = $request->permit_number;
         $data->permit_valid_upto_date = $permit_valid_upto_date;
         $data->policy_number = $request->policy_number;
-        $data->policy_start_date = $policy_start_date;
-        $data->policy_end_date = $policy_end_date;
+        //$data->policy_start_date = $policy_start_date;
+        //$data->policy_end_date = $policy_end_date;
         $data->renewal_premium = $request->renewal_premium;
         $data->engine_number = $request->engine_number;
         $data->chasis_number = $request->chasis_number;
@@ -305,9 +313,23 @@ class VehicleDetailController extends Controller
      */
     public function get_dependent_project_name(Request $request)
     {
-        $procuctNames = procuctname::where('producttypes_id',$request->product_type_id)->pluck('title','id');
+        $procuctNames = procuctname::where('producttypes_id',$request->product_type_id)->where('status',1)->pluck('title','id');
         if ($procuctNames) {
             return response()->json(['status' => 'success', 'data' => $procuctNames], 200);
+        }
+        return response()->json(['status' => 'failed', 'message' => 'No record found'], 404);
+    }
+
+    /**
+     * Get all dependent broker name based on insurance company.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function get_dependent_broker_name(Request $request)
+    {
+        $brokerNames = broker::where('insurance_companies_id',$request->insuranceCompany_id)->where('status',1)->pluck('title','id');
+        if ($brokerNames) {
+            return response()->json(['status' => 'success', 'data' => $brokerNames], 200);
         }
         return response()->json(['status' => 'failed', 'message' => 'No record found'], 404);
     }

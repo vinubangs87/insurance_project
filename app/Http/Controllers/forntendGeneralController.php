@@ -22,12 +22,13 @@ class forntendGeneralController extends Controller
 
         $vehicledetail = DB::table('vehicledetails AS vd')
                         ->leftjoin('insurance_companies AS ic','vd.insuranceCompany_id','=','ic.id')
+                        ->leftjoin('brokers AS br','vd.broker_id','=','br.id')
                         ->leftjoin('producttypes AS pt','vd.producttype_id','=','pt.id')
                         ->leftjoin('procuctnames AS pn','vd.procuctname_id','=','pn.id')
                         ->leftjoin('enginetypes AS et','vd.enginetype_id','=','et.id')
                         ->leftjoin('permittypes AS pert','vd.permittype_id','=','pert.id')
                         ->leftjoin('financecompanies AS fc','vd.financecompany_id','=','fc.id')
-                        ->select('vd.*','ic.title AS ic_title','pt.title AS pt_title','pn.title AS pn_title','et.title AS et_title','pert.title AS pert_title','fc.title AS fc_title')
+                        ->select('vd.*','ic.title AS ic_title','br.title AS br_title','pt.title AS pt_title','pn.title AS pn_title','et.title AS et_title','pert.title AS pert_title','fc.title AS fc_title')
                         ->where('vd.vehicle_number','=',$request->vehicle_number)
                         ->where('vd.deleted_at',NULL)
                         ->first();

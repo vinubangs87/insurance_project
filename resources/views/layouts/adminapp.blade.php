@@ -14,7 +14,8 @@
 
     <title>{{ config('app.name', 'Laravel') }}</title>
 
-    <link href="cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css">
+    {{-- <link href="cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css"> --}}
+    <link href="{{ asset('admin/build/css/jquery.dataTables.min.css') }}" rel="stylesheet">
     <link href="{{ asset('admin/vendors/bootstrap/dist/css/bootstrap.min.css') }}" rel="stylesheet">
     <!-- Font Awesome -->
     <link href="{{ asset('admin/vendors/font-awesome/css/font-awesome.min.css') }}" rel="stylesheet">
@@ -77,7 +78,7 @@
             <br />
 
             <!-- sidebar menu -->
-            @include('layouts.admininclude.leftSidebar');
+            @include('layouts.admininclude.leftSideBar');
             <!-- /sidebar menu -->
           </div>
         </div>
@@ -122,8 +123,10 @@
     <script src="{{ asset('admin/vendors/bootstrap-daterangepicker/daterangepicker.js') }}"></script>    
     <!-- Custom Theme Scripts -->
     <script src="{{ asset('admin/build/js/custom.min.js') }}"></script>
-    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    {{-- <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"> --}}
+    <link href="{{ asset('admin/build/css/jquery-ui.css') }}" rel="stylesheet">
+    {{-- <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script> --}}
+    <script src="{{ asset('admin/build/js/jquery-ui.js') }}"></script>
     <script type="text/javascript">
       $('.datetype').attr('placeholder', 'dd/mm/yyyy');
       $(".datetype").datepicker({

@@ -27,9 +27,9 @@ class EngineTypeController extends Controller
     public function index()
     {
         $dataforshow = enginetype::orderBy('id', 'DESC')->get();
-        $title = 'Engine type';
+        $title = 'Fuel type';
         $type = 'enginetypeSave';
-        $inputName = 'Engine type name';
+        $inputName = 'Fuel type name';
         $formtype = 'Please fill the form';
         return view('admin.commonForm.commonForm',compact('dataforshow','title','type','inputName','formtype'));
     }
@@ -81,9 +81,9 @@ class EngineTypeController extends Controller
     public function edit($id)
     {
         $dataforedit = enginetype::find($id);
-        $title = 'Engine type';
+        $title = 'Fuel type';
         $type = 'enginetypeUpdate';
-        $inputName = 'Engine type name';
+        $inputName = 'Fuel type name';
         $formtype = 'Please update the form';
         return view('admin.commonForm.commonForm',compact('dataforedit','title','type','inputName','formtype'));
     }

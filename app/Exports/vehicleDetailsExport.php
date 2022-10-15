@@ -19,7 +19,7 @@ class vehicleDetailsExport implements FromCollection, WithHeadings, WithMapping
 
     public function headings(): array
     {
-        return ["Insurance company", "Product type", "Product name", "Fuel type", "Permit type", "Customer name", "Customer mobile", "Customer email", "Customer address", "Vehicle number", "Registration number", "Registration date", "Registration expiry date", "Insurance start date", "Insurance expiry date", "Insurance amount", "Fitness expiry date", "MV tax expiry date", "PUCC expiry date", "Finance type", "Finance company", "Permit number", "Permit valid upto date", "Policy number", "Policy start date", "Policy end date", "Renewal premium", "Engine number", "Chasis number"];
+        return ["Insurance company","Broker/IRDA", "Product type", "Product name", "Fuel type", "Permit type", "Customer name", "Customer mobile", "Customer email", "Customer address", "Vehicle number", "Registration number", "Registration date", "Registration expiry date", "Insurance start date", "Insurance expiry date", "Insurance amount", "Fitness expiry date", "MV tax expiry date", "PUCC expiry date", "Finance type", "Finance company", "Permit number", "Permit valid upto date", "Policy number", "Renewal premium", "Engine number", "Chasis number"];
     }   
  
     public function collection()
@@ -33,12 +33,13 @@ class vehicleDetailsExport implements FromCollection, WithHeadings, WithMapping
 \DB::enableQueryLog();
         return $results = DB::table('vehicledetails')
               ->leftjoin('insurance_companies','vehicledetails.insuranceCompany_id','=','insurance_companies.id')
+              ->leftjoin('brokers','vehicledetails.broker_id','=','brokers.id')
               ->leftjoin('producttypes','vehicledetails.producttype_id','=','producttypes.id')
               ->leftjoin('procuctnames','vehicledetails.procuctname_id','=','procuctnames.id')
               ->leftjoin('enginetypes','vehicledetails.enginetype_id','=','enginetypes.id')
               ->leftjoin('permittypes','vehicledetails.permittype_id','=','permittypes.id')
               ->leftjoin('financecompanies','vehicledetails.financecompany_id','=','financecompanies.id') 
-              ->select('vehicledetails.*','insurance_companies.title AS ic_title','producttypes.title AS p_title','procuctnames.title AS pn_title','enginetypes.title AS et_title','permittypes.title AS pt_title','financecompanies.title AS fc_title')                    
+              ->select('vehicledetails.*','insurance_companies.title AS ic_title','brokers.title AS br_title','producttypes.title AS p_title','procuctnames.title AS pn_title','enginetypes.title AS et_title','permittypes.title AS pt_title','financecompanies.title AS fc_title')                    
               ->Where(function ($query) use ($start_date,$end_date) {
                   $query->whereBetween('expiry_date', [$start_date, $end_date]);
                   $query->orWhereBetween('insurance_expiry_date', [$start_date, $end_date]);
@@ -46,7 +47,6 @@ class vehicleDetailsExport implements FromCollection, WithHeadings, WithMapping
                   $query->orWhereBetween('mv_tax_expiry_date', [$start_date, $end_date]);
                   $query->orWhereBetween('pucc_expiry_date', [$start_date, $end_date]);
                   $query->orWhereBetween('permit_valid_upto_date', [$start_date, $end_date]);
-                  $query->orWhereBetween('policy_end_date', [$start_date, $end_date]);
             })
             ->Where('vehicledetails.deleted_at',null)
             ->get();
@@ -57,6 +57,7 @@ class vehicleDetailsExport implements FromCollection, WithHeadings, WithMapping
     public function map($row): array{
            $fields = [
             $row->ic_title,
+            $row->br_title,
             $row->p_title,
             $row->pn_title,
             $row->et_title,
@@ -80,8 +81,6 @@ class vehicleDetailsExport implements FromCollection, WithHeadings, WithMapping
             $row->permit_number,
             !empty($row->permit_valid_upto_date) ? Carbon::createFromFormat('Y-m-d', $row->permit_valid_upto_date)->format('d/m/Y') : '',
             $row->policy_number,
-            !empty($row->policy_start_date) ? Carbon::createFromFormat('Y-m-d', $row->policy_start_date)->format('d/m/Y') : '',
-            !empty($row->policy_end_date) ? Carbon::createFromFormat('Y-m-d', $row->policy_end_date)->format('d/m/Y') : '',
             $row->renewal_premium,
             $row->engine_number,
             $row->chasis_number,

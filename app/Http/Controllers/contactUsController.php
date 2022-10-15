@@ -24,13 +24,12 @@ class contactUsController extends Controller
         $data = array(
             'name' => $request->name,
             'email' => $request->email,
+            'number' => $request->number,
             'subject' => $request->subject,
             'message' => $request->message
         );
 
      $result = Mail::to('vinodjaiswal87@gmail.com')->send(new SendContactFormMail($data));
-     echo '<pre>';
-     print_r($result);exit;
      return back()->with('success', 'Thanks for contacting us!');
 
     }

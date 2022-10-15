@@ -6,6 +6,10 @@ use Illuminate\Console\Command;
 use App\Models\vehicledetail;
 use DB;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\sendMailByScheduler;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\excelByScheduler;
 
 class SendSmsEmailDaily extends Command
 {
@@ -42,61 +46,8 @@ class SendSmsEmailDaily extends Command
     {
         try
         {
-            $vehicledetail = vehicledetail::all();
-            $userdetails = array();
-            foreach($vehicledetail as $vehicledetail)
-            {
-                $customer_mobile = '';
-                $customer_name = '';
-                $registration_date_diff = (Carbon::now()->format('Y-m-d') < $vehicledetail->registration_date) ? now()->diffInDays(Carbon::parse($vehicledetail->registration_date)) : '';
-                $insurance_expiry_date_diff = (Carbon::now()->format('Y-m-d') < $vehicledetail->insurance_expiry_date) ? now()->diffInDays(Carbon::parse($vehicledetail->insurance_expiry_date)) : '';
-                $fitness_expiry_date_diff = (Carbon::now()->format('Y-m-d') < $vehicledetail->fitness_expiry_date) ? now()->diffInDays(Carbon::parse($vehicledetail->fitness_expiry_date)) : '';
-                $mv_tax_expiry_date_diff = (Carbon::now()->format('Y-m-d') < $vehicledetail->mv_tax_expiry_date) ? now()->diffInDays(Carbon::parse($vehicledetail->mv_tax_expiry_date)) : '';
-                $pucc_expiry_date_diff = (Carbon::now()->format('Y-m-d') < $vehicledetail->pucc_expiry_date) ? now()->diffInDays(Carbon::parse($vehicledetail->pucc_expiry_date)) : '';
-                $permit_valid_upto_date_diff = (Carbon::now()->format('Y-m-d') < $vehicledetail->permit_valid_upto_date) ? now()->diffInDays(Carbon::parse($vehicledetail->permit_valid_upto_date)) : '';
-                $policy_end_date_diff = (Carbon::now()->format('Y-m-d') < $vehicledetail->policy_end_date) ? now()->diffInDays(Carbon::parse($vehicledetail->policy_end_date)) : '';
-                
-                if($registration_date_diff != '' && $registration_date_diff < 30)
-                {
-                    $customer_mobile = $vehicledetail->customer_mobile;
-                    $customer_name = $vehicledetail->customer_name;
-                }
-                if($insurance_expiry_date_diff != '' && $insurance_expiry_date_diff < 30)
-                {
-                    $customer_mobile = $vehicledetail->customer_mobile;
-                    $customer_name = $vehicledetail->customer_name;
-                }
-                if($fitness_expiry_date_diff != '' && $fitness_expiry_date_diff < 30)
-                {
-                    $customer_mobile = $vehicledetail->customer_mobile;
-                    $customer_name = $vehicledetail->customer_name;
-                }
-                if($mv_tax_expiry_date_diff != '' && $mv_tax_expiry_date_diff < 30)
-                {
-                    $customer_mobile = $vehicledetail->customer_mobile;
-                    $customer_name = $vehicledetail->customer_name;
-                }
-                if($pucc_expiry_date_diff != '' && $pucc_expiry_date_diff < 30)
-                {
-                    $customer_mobile = $vehicledetail->customer_mobile;
-                    $customer_name = $vehicledetail->customer_name;
-                }
-                if($permit_valid_upto_date_diff != '' && $permit_valid_upto_date_diff < 30)
-                {
-                    $customer_mobile = $vehicledetail->customer_mobile;
-                    $customer_name = $vehicledetail->customer_name;
-                }
-                if($policy_end_date_diff != '' && $policy_end_date_diff < 30)
-                {
-                    $customer_mobile = $vehicledetail->customer_mobile;
-                    $customer_name = $vehicledetail->customer_name;
-                }
-                $userdetails[] = array('customer_name'=>$customer_name,'customer_mobile'=>$customer_mobile);
-            }
-            
-            echo '<pre>';
-            print_r($userdetails);
-            //\Log::info($vehicledetail);
+            $mailTo = config('constants.mail_address.common_to_address');
+            $result = Mail::to($mailTo)->send(new sendMailByScheduler());
         }
         catch (Exception $e)
         {

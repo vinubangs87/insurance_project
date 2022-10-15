@@ -25,6 +25,7 @@ class vvehicleDetailsUpdateValidation extends FormRequest
     {
         return [
             'insuranceCompany_id'=> 'required',
+            'broker_id'=> 'required',
             'producttype_id'=> 'required',
             'procuctname_id'=> 'required',
             'enginetype_id'=> 'required',
@@ -47,8 +48,8 @@ class vvehicleDetailsUpdateValidation extends FormRequest
             //'permit_number'=> 'required',
             'permit_valid_upto_date'=> 'required|date_format:d/m/Y',
             'policy_number'=> 'required',
-            'policy_start_date'=> 'required|date_format:d/m/Y',
-            'policy_end_date'=> 'required|date_format:d/m/Y',
+            //'policy_start_date'=> 'required|date_format:d/m/Y',
+            //'policy_end_date'=> 'required|date_format:d/m/Y',
             //'insurance_amount'=> 'required',
         ];
     }

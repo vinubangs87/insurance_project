@@ -28,7 +28,7 @@
 									<form class="form-label-left" action="{{ route('vehicledetails.update', $vehicledetail->id) }}" method="post" enctype='multipart/form-data'>
 										@csrf
 										{{ method_field('PUT') }}
-										<div class="col-md-6 col-sm-6  form-group has-feedback">
+										<div class="col-md-3 col-sm-3  form-group has-feedback">
 											<label for="inputSuccess2">Insurance company <span class="required">*</span></label>
 											<select id="insuranceCompany_id" class="form-control" name="insuranceCompany_id">
 												<option value="">Choose..</option>
@@ -38,6 +38,19 @@
 											</select>
 											<small class="text-danger">
 		                    {{ $errors->first('insuranceCompany_id',':message') }}
+		                  </small>
+										</div>
+
+										<div class="col-md-3 col-sm-3  form-group has-feedback">
+											<label for="inputSuccess2">Broker / IRDA <span class="required">*</span></label>
+											<select id="broker_id" class="form-control" name="broker_id">
+												<option value="">Choose..</option>
+												@foreach($broker as $broker)
+												<option value="{{ $broker->id }}" {{ $vehicledetail->broker_id == $broker->id ? 'selected' : '' }}>{{ $broker->title }}</option>
+												@endforeach
+											</select>
+											<small class="text-danger">
+		                    {{ $errors->first('broker_id',':message') }}
 		                  </small>
 										</div>
 
@@ -326,7 +339,7 @@
 		                  </small>
 										</div>
 
-										<div class="col-md-6 col-sm-6  form-group has-feedback">
+										{{-- <div class="col-md-6 col-sm-6  form-group has-feedback">
 											<label for="inputSuccess2">Policy start date <span class="required">*</span></label>
 											<input type="text" class="form-control datetype" id="policy_start_date" name="policy_start_date" value="{{ \Carbon\Carbon::parse($vehicledetail->policy_start_date)->format('d/m/Y') }}" />
 											<small class="text-danger">
@@ -346,7 +359,7 @@
 											<small class="text-danger">
 		                    {{ $errors->first('policy_end_date',':message') }}
 		                  </small>
-										</div>
+										</div> --}}
 
 										<div class="col-md-6 col-sm-6  form-group has-feedback">
 											<label for="inputSuccess2">Renewal premium</label>
@@ -422,4 +435,5 @@ $(document).ready(function(){
 });
 </script>
 @include('admin.vehicleDetails.vehicledetailsJs') {{-- Show product name dependent field based on product type --}}
+{{-- @include('admin.vehicleDetails.brokerdetailsJs') --}} {{-- Show broker name dependent field based on insurance company --}}
 @endpush

@@ -58,7 +58,6 @@
                         <tr>
                           <th>Customer name</th>
                           <th>Customer mobile</th>
-                          <th>Vehicle number</th>
                           <th>Registration number</th>
                           <th>Policy number</th>
                           <th>Status</th>
@@ -73,10 +72,9 @@
                           <td>{{ $vehiclelist->customer_name }}</td>
                           <td>{{ $vehiclelist->customer_mobile }}</td>
                           <td>{{ $vehiclelist->vehicle_number }}</td>
-                          <td>{{ $vehiclelist->registration_number }}</td>
                           <td>{{ $vehiclelist->policy_number }}</td>
                           
-                          	@if((\Carbon\Carbon::now()->format('Y-m-d') > $vehiclelist->expiry_date) || (\Carbon\Carbon::now()->format('Y-m-d') > $vehiclelist->insurance_expiry_date) || (\Carbon\Carbon::now()->format('Y-m-d') > $vehiclelist->fitness_expiry_date) || (\Carbon\Carbon::now()->format('Y-m-d') > $vehiclelist->mv_tax_expiry_date) || (\Carbon\Carbon::now()->format('Y-m-d') > $vehiclelist->pucc_expiry_date) || (\Carbon\Carbon::now()->format('Y-m-d') > $vehiclelist->permit_valid_upto_date) || (\Carbon\Carbon::now()->format('Y-m-d') > $vehiclelist->policy_end_date))
+                          	@if((\Carbon\Carbon::now()->format('Y-m-d') > $vehiclelist->expiry_date) || (\Carbon\Carbon::now()->format('Y-m-d') > $vehiclelist->insurance_expiry_date) || (\Carbon\Carbon::now()->format('Y-m-d') > $vehiclelist->fitness_expiry_date) || (\Carbon\Carbon::now()->format('Y-m-d') > $vehiclelist->mv_tax_expiry_date) || (\Carbon\Carbon::now()->format('Y-m-d') > $vehiclelist->pucc_expiry_date) || (\Carbon\Carbon::now()->format('Y-m-d') > $vehiclelist->permit_valid_upto_date))
                           	<td class="red inactive-class"><div class="status-inactive"><b>INACTIVE</b></div></td>
                           	@else
 	                          <td class="green"><div class="status-active" title="Active"><b>ACTIVE</b></div></td>
