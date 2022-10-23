@@ -128,9 +128,19 @@
 										<div class="row" id="partial_paymet_details" style="display:none;">
 											<div class="col-sm-12">
 												<h4 class="red">Details of partial payment: </h4>
-												<div class="card-box table-responsive">
-													<table class="table table-striped table-bordered" style="width:100%">
+												<input type="button" value="Print" class="btn btn-info btn-lg" onclick="pdf()" />
+												<div class="card-box table-responsive" id="print-window">
+													<table class="table table-striped table-bordered" id="amount_table" style="width:100%">
 														<thead>
+															<tr>
+									                <th colspan="2" style="vertical-align: middle;">Total Insurance amount: {{ $vehicledetail->insurance_amount }}/-</th>
+									                <th colspan="4" style="text-align: right;">
+									                	Customer Name: {{ $vehicledetail->customer_name }}<br/>
+									                	Customer Mobile: {{ $vehicledetail->customer_mobile }}<br/>
+									                	Registration Number: {{ $vehicledetail->vehicle_number }}<br/>
+									                	Customer Address: {{ $vehicledetail->customer_address }}
+									                </th>
+									            </tr>
 															<tr>
 																<th>Advance amount</th>
 																<th>Intrest rate</th>
@@ -144,11 +154,11 @@
 														<tbody>
 															@foreach($insuranceAmountHisstoryDetails as $insuranceAmountHisstoryDetails)
                         <tr>
-                          <td>{{ $insuranceAmountHisstoryDetails->advance_amount }}</td>
-                          <td>{{ $insuranceAmountHisstoryDetails->intrest_rate }}</td>
-                          <td>{{ $insuranceAmountHisstoryDetails->intrest_amount }}</td>
-                          <td>{{ $insuranceAmountHisstoryDetails->remaining_amount_without_intrest }}</td>
-                          <td>{{ $insuranceAmountHisstoryDetails->remaining_amount_with_intrest }}</td>
+                          <td>{{ $insuranceAmountHisstoryDetails->advance_amount }}/-</td>
+                          <td>{{ $insuranceAmountHisstoryDetails->intrest_rate }}%</td>
+                          <td>{{ $insuranceAmountHisstoryDetails->intrest_amount }}/-</td>
+                          <td>{{ $insuranceAmountHisstoryDetails->remaining_amount_without_intrest }}/-</td>
+                          <td>{{ $insuranceAmountHisstoryDetails->remaining_amount_with_intrest }}/-</td>
                           <td>{{ \Carbon\Carbon::parse($insuranceAmountHisstoryDetails->advance_amount_date)->format('d/m/Y') }}</td>
                         </tr>
                       	@endforeach
@@ -157,7 +167,7 @@
 												</div>
 											</div>
 										</div>
-
+										<div>&nbsp;</div>
 										<form class="form-label-left" action="{{ route('add.partialPaymentType') }}" method="post"  id="partialPaymentType" style="display:none;">
 
 											<h4 class="red">Fill partial payment: </h4>
@@ -383,8 +393,78 @@
 					});
 			}
 		});  
-
-
 	  });  
+
+
+/*	$('#amount_table').DataTable( {
+	        dom: 'Bfrtip',
+  				"ordering": false,
+  				"paging": false,
+  				"bFilter": false,
+  				"bInfo": false,
+	        buttons: [
+	            {
+	                extend: 'print',
+	                text: 'Download',
+	                title: 'Durga Insurance and solution',
+	                customize: function ( win ) {
+	                    $(win.document.body)
+	                        .css( 'font-size', '10pt' )
+	                        .prepend(
+	                            '<img src="http://datatables.net/media/images/logo-fade.png" style="position:absolute; top:0; left:0;" />'
+	                        );
+	 
+	                    $(win.document.body).find( 'table' )
+	                        .addClass( 'nowrap' )
+	                        .css( 'font-size', 'inherit' );
+	                }
+	            }
+	        ]
+	});*/
+
+/*	$(document).ready(function() {
+	    $('#amount_table').DataTable( {
+	        dom: 'Bfrtip',
+	        buttons: [
+	            {
+	                extend: 'print',
+	                text: 'Print all',
+	                exportOptions: {
+	                    modifier: {
+	                        selected: null
+	                    }
+	                }
+	            },
+	            {
+	                extend: 'print',
+	                text: 'Print selected'
+	            }
+	        ],
+	        select: true
+	    } );
+	} );*/
+
+	function pdf() {
+	    let t = document.getElementById('print-window').innerHTML;
+
+	    let style = "<style>";
+	    style = style + "table {width: 100%; font-size: 17px;}";
+	    style = style + "table, th, td {border: solid 1px #DDD; border-collapse: collapse;";
+	    style = style + "padding: 2px 3px;text-align: center;}";
+	    style = style + "</style>";
+	    let win = window.open('', '', 'height=700,width=700');
+
+	    win.document.write('<html><head>');
+	    win.document.write('<title>Durga Insurance and solutions</title>');
+	    win.document.write('<h4>Durga Insurance and solutions</h4>');
+	    win.document.write(style);
+	    win.document.write('</head>');
+	    win.document.write('<body>');
+	    win.document.write(t);
+	    win.document.write('</body></html>');
+
+	    win.document.close();
+	    win.print();
+	}
 	</script>
 	@endpush

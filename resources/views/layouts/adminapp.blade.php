@@ -133,6 +133,11 @@
         "dateFormat" : "dd/mm/yy"
       });
     </script>
+    <script type="text/javascript">
+      $('#vehicle_insurance_amount,#insurance_amount,#advance_amount,#intrest_rate').keyup(function () { 
+          this.value = this.value.replace(/[^0-9\.]/g,'');
+      });
+    </script>
     @stack('pagespecificjs')
   </body>
 </html>
