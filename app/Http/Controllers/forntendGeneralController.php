@@ -10,6 +10,7 @@ use App\Models\enginetype;
 use App\Models\permittype;
 use App\Models\vehicledetail;
 use App\Models\financecompany;
+use App\Models\visitor;
 use DB;
 
 class forntendGeneralController extends Controller
@@ -39,6 +40,25 @@ class forntendGeneralController extends Controller
         else
         {
             return view('no_data_vehicle_modal_view');
+        }
+    }
+
+    public function unique_visitor(Request $request)
+    {
+        // count total visitors
+        $clientIP = \Request::getClientIp(true);
+        $data = visitor::where('ip_address',$clientIP)->first();
+        if(empty($data))
+        {
+           $save_ip = new visitor();
+           $save_ip->ip_address = $clientIP;
+           $save_ip->save();
+           $count_ip = $save_ip->count();
+           return response()->json(['status' => 'success', 'data' => $count_ip], 200);
+        }
+        else{
+            $count_ip = visitor::count();
+            return response()->json(['status' => 'success', 'data' => $count_ip], 200);
         }
     }
 }

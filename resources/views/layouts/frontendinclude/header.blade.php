@@ -64,18 +64,21 @@
         <div class="nav-search col-lg-4">
           <ul class="list-unstyled">
               <li style="margin: 8px 0 0 0">
-                <a title="Facebook" href="#" style="padding: 0 20px 0 20px;">
+                <a title="Facebook" href="#" style="padding: 0 15px 0 15px;">
                     <span class="social-icon"><i class="fab fa-facebook-f"></i></span>
                 </a>
-                <a title="Twitter" href="#" style="padding: 0 20px 0 20px;">
+                <a title="Twitter" href="#" style="padding: 0 15px 0 15px;">
                     <span class="social-icon"><i class="fab fa-twitter"></i></span>
                 </a>
-                <a title="Instagram" href="#" style="padding: 0 20px 0 20px;">
+                <a title="Instagram" href="#" style="padding: 0 15px 0 15px;">
                     <span class="social-icon"><i class="fab fa-instagram"></i></span>
                 </a>
-                <a title="Linkdin" href="#" style="padding: 0 20px 0 20px;">
+                <a title="Linkdin" href="#" style="padding: 0 15px 0 15px;">
                     <span class="social-icon"><i class="fab fa-github"></i></span>
                 </a>
+                <b>
+                    <span>Total visitors: </span><b style="color: red;" id="unique_visitor"></b>
+                </b>
               </li>
           </ul>
         </div>

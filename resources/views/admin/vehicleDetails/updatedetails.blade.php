@@ -139,8 +139,8 @@
 										</div>
 
 										<div class="col-md-3 col-sm-3  form-group has-feedback">
-											<label for="inputSuccess2">Vehicle/Registration number</label>
-											<input type="text" class="form-control" id="vehicle_number" name="vehicle_number" value="{{ $vehicledetail->vehicle_number }}" readonly disabled />
+											<label for="inputSuccess2">Vehicle/Registration number <span class="required">*</span></label>
+											<input type="text" class="form-control" id="vehicle_number" name="vehicle_number" value="{{ $vehicledetail->vehicle_number }}" />
 											<small class="text-danger">
 		                    {{ $errors->first('vehicle_number',':message') }}
 		                  </small>

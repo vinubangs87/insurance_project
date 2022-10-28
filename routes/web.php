@@ -107,6 +107,7 @@ Route::post('send/contact/mail', [contactUsController::class,'send_email'])->nam
 
 
 Route::post('show/vehicle/details', [forntendGeneralController::class,'vehicle_details'])->name('show.vehicle.details');
+Route::post('unique/visitor', [forntendGeneralController::class,'unique_visitor'])->name('unique.visitor');
 
 /*Route::get('contact/us' , function(){
     return view('contacts');

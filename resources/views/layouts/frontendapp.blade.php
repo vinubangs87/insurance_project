@@ -178,6 +178,25 @@ $(document).on('click', '#search-button', function(event) {
 	    }
 	});
 });
+
+// for visitor
+
+$(document).ready(function(){
+    $.ajax({
+    url: "{{ route('unique.visitor')}}",
+    type: "POST",
+    dataType: 'JSON',
+    data: {
+        _token: '{{csrf_token()}}'
+    },
+    success:function(data) {      
+      $('#unique_visitor').html(data.data);
+    },
+      error:function (response) {
+          alert(response.responseJSON.errors.vehicle_number[0]);
+        }
+    });
+});
   </script>
 
   </div><!-- Body inner end -->
